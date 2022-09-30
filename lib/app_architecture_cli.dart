@@ -19,7 +19,7 @@ void main(List<String> args) {
   String path = './lib/${componentName.toCamelCase}_component';
 
   final bool pathConfirmed =
-      confirm('is path [$path] correct?', defaultValue: true);
+      confirm('# is path [$path] correct?', defaultValue: true);
 
   if (!pathConfirmed) {
     path = ask('# enter correct path:');
@@ -33,48 +33,48 @@ void main(List<String> args) {
   final String presentationPath = '$path/presentation';
 
   createDir(dataPath, recursive: true);
+  createDir(repositoriesPath, recursive: true);
   createDir(domainPath, recursive: true);
   createDir(presentationPath, recursive: true);
 
-  createModel(dataPath, componentName);
-  createRepository(repositoriesPath, componentName);
+  createModel(path: dataPath, name: componentName);
+  createRepository(path: repositoriesPath, name: componentName);
 
-  createEntity(domainPath, componentName);
-  createService(domainPath, componentName);
+  createEntity(path: domainPath, name: componentName);
+  createService(path: domainPath, name: componentName);
 
-  createCubit(presentationPath, componentName);
-  createWidget(presentationPath, componentName);
+  createCubit(path: presentationPath, name: componentName);
+  createWidget(path: presentationPath, name: componentName);
 
   print('Component [$componentName] has been created.');
 }
 
-void createModel(String dataPath, String componentName) {
-  '$dataPath/${componentName.toCamelCase}_model.dart'.write('''
-class ${componentName}Model {
-  ${componentName}Model();
+void createModel({required String path, required String name}) {
+  '$path/${name.toCamelCase}_model.dart'.write('''
+class ${name}Model {
+  ${name}Model();
 }
 ''');
 }
 
-void createRepository(String repositoriesPath, String componentName) {
-  '$repositoriesPath/base_${componentName.toCamelCase}_repository.dart'
-      .write('''
+void createRepository({required String path, required String name}) {
+  '$path/base_${name.toCamelCase}_repository.dart'.write('''
 import 'package:flutter_app_architecture/structure/data/base_repository.dart';
 
-class Base${componentName}Repository extends BaseRepository {}
+class Base${name}Repository extends BaseRepository {}
 ''');
 
-  '$repositoriesPath/${componentName.toCamelCase}_repository.dart'.write('''
-class Base${componentName}Repository extends Base${componentName}Repository {}
+  '$path/${name.toCamelCase}_repository.dart'.write('''
+class Base${name}Repository extends Base${name}Repository {}
 ''');
 }
 
-void createEntity(String domainPath, String componentName) {
-  '$domainPath/${componentName.toCamelCase}_repository.dart'.write('''
+void createEntity({required String path, required String name}) {
+  '$path/${name.toCamelCase}_repository.dart'.write('''
 import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
 
-class ${componentName}Entity extends BaseEntity {
-  ${componentName}Entity();
+class ${name}Entity extends BaseEntity {
+  ${name}Entity();
 
   @override
   String toString() => throw UnimplementedError();  
@@ -82,41 +82,41 @@ class ${componentName}Entity extends BaseEntity {
 ''');
 }
 
-createService(domainPath, componentName) {
-  '$domainPath/${componentName.toCamelCase}_service.dart'.write('''
+createService({required String path, required String name}) {
+  '$path/${name.toCamelCase}_service.dart'.write('''
 import 'package:flutter_app_architecture/structure/domain/base_service.dart';
 
-class ${componentName}Service extends BaseService<${componentName}Entity> {
-  ${componentName}Service(Base${componentName}Repository repository) : super(repository);
+class ${name}Service extends BaseService<${name}Entity> {
+  ${name}Service(Base${name}Repository repository) : super(repository);
 ''');
 }
 
-createCubit(presentationPath, componentName) {
-  '$presentationPath/${componentName.toCamelCase}_cubit.dart'.write('''
+createCubit({required String path, required String name}) {
+  '$path/${name.toCamelCase}_cubit.dart'.write('''
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_cubit.dart';
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state.dart';
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state_status.dart';
 
-class ${componentName}Cubit extends BaseCubit<${componentName}Entity> {
-  ${componentName}Cubit({required ${componentName}Service service})
+class ${name}Cubit extends BaseCubit<${name}Entity> {
+  ${name}Cubit({required ${name}Service service})
       : super(
           service: service,
-          initialState: BaseState<${componentName}Entity>(status: BaseStateStatus.initial),
+          initialState: BaseState<${name}Entity>(status: BaseStateStatus.initial),
         );
 ''');
 }
 
-createWidget(presentationPath, componentName) {
-  '$presentationPath/${componentName.toCamelCase}_widget.dart'.write('''
+createWidget({required String path, required String name}) {
+  '$path/${name.toCamelCase}_widget.dart'.write('''
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
 import 'package:flutter_app_architecture/structure/presentation/base_widget.dart';
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state.dart';
 
-class ${componentName}Widget extends StatelessWidget {
+class ${name}Widget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => BaseWidget<${componentName}Entity, ${componentName}Cubit>(
+  Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Cubit>(
         loadingWidgetBuilder:
             (BuildContext context, BaseState<BaseEntity> state) =>
                 throw UnimplementedError(),
