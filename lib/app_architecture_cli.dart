@@ -23,13 +23,12 @@ void main(List<String> args) {
     defaultValue: './lib/${componentName.toSnakeCase}_component',
   );
 
-  createDir(path, recursive: true);
-
   final String dataPath = '$path/data';
   final String repositoriesPath = '$path/repositories';
   final String domainPath = '$path/domain';
   final String presentationPath = '$path/presentation';
 
+  createDir(path, recursive: true);
   createDir(dataPath, recursive: true);
   createDir(repositoriesPath, recursive: true);
   createDir(domainPath, recursive: true);
