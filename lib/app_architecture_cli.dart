@@ -16,7 +16,7 @@ void main(List<String> args) {
     return;
   }
 
-  String path = './lib/${componentName.toCamelCase}_component';
+  String path = './lib/${componentName.toSnakeCase}_component';
 
   final bool pathConfirmed =
       confirm('# is path [$path] correct?', defaultValue: true);
@@ -50,7 +50,7 @@ void main(List<String> args) {
 }
 
 void createModel({required String path, required String name}) {
-  '$path/${name.toCamelCase}_model.dart'.write('''
+  '$path/${name.toSnakeCase}_model.dart'.write('''
 class ${name}Model {
   ${name}Model();
 }
@@ -58,19 +58,19 @@ class ${name}Model {
 }
 
 void createRepository({required String path, required String name}) {
-  '$path/base_${name.toCamelCase}_repository.dart'.write('''
+  '$path/base_${name.toSnakeCase}_repository.dart'.write('''
 import 'package:flutter_app_architecture/structure/data/base_repository.dart';
 
 class Base${name}Repository extends BaseRepository {}
 ''');
 
-  '$path/${name.toCamelCase}_repository.dart'.write('''
+  '$path/${name.toSnakeCase}_repository.dart'.write('''
 class Base${name}Repository extends Base${name}Repository {}
 ''');
 }
 
 void createEntity({required String path, required String name}) {
-  '$path/${name.toCamelCase}_repository.dart'.write('''
+  '$path/${name.toSnakeCase}_repository.dart'.write('''
 import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
 
 class ${name}Entity extends BaseEntity {
@@ -83,7 +83,7 @@ class ${name}Entity extends BaseEntity {
 }
 
 createService({required String path, required String name}) {
-  '$path/${name.toCamelCase}_service.dart'.write('''
+  '$path/${name.toSnakeCase}_service.dart'.write('''
 import 'package:flutter_app_architecture/structure/domain/base_service.dart';
 
 class ${name}Service extends BaseService<${name}Entity> {
@@ -92,7 +92,7 @@ class ${name}Service extends BaseService<${name}Entity> {
 }
 
 createCubit({required String path, required String name}) {
-  '$path/${name.toCamelCase}_cubit.dart'.write('''
+  '$path/${name.toSnakeCase}_cubit.dart'.write('''
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_cubit.dart';
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state.dart';
 import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state_status.dart';
@@ -107,7 +107,7 @@ class ${name}Cubit extends BaseCubit<${name}Entity> {
 }
 
 createWidget({required String path, required String name}) {
-  '$path/${name.toCamelCase}_widget.dart'.write('''
+  '$path/${name.toSnakeCase}_widget.dart'.write('''
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
