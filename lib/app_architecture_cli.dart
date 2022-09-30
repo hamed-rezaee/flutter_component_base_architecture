@@ -5,12 +5,15 @@ import 'package:dcli/dcli.dart';
 import 'package:dart_app_architecture_cli/extensions.dart';
 
 void main(List<String> args) {
-  print('Flutter Deriv Component Generator... 💪');
+  print(blue('*** Flutter Deriv Component Generator ***'));
 
-  String componentName = ask('# Enter component name [example: RegisterUser]:');
+  String componentName = ask(
+    green('# Enter component name'),
+    defaultValue: 'RegisterUser',
+  );
 
   final confirmed = confirm(
-    '# Component name would be [$componentName],  is it correct?',
+    '${green('# Component name would be')} ${red(componentName)}',
     defaultValue: true,
   );
 
@@ -19,7 +22,7 @@ void main(List<String> args) {
   }
 
   final String path = ask(
-    '# Enter component path:',
+    green('# Enter component path'),
     defaultValue: './lib/${componentName.toSnakeCase}_component',
   );
 
@@ -43,7 +46,9 @@ void main(List<String> args) {
   createCubit(path: presentationPath, name: componentName);
   createWidget(path: presentationPath, name: componentName);
 
-  print('Component [$componentName] has been created.');
+  print(
+    '${blue('Component ')}${red(componentName)}${blue(' has been created successfully.')} 🎉 🎉 🎉',
+  );
 }
 
 void createModel({required String path, required String name}) {
