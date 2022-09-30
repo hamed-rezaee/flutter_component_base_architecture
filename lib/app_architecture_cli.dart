@@ -5,7 +5,7 @@ import 'package:dcli/dcli.dart';
 import 'package:dart_app_architecture_cli/extensions.dart';
 
 void main(List<String> args) {
-  print('Generate Flutter Deriv Component... 💪');
+  print('Flutter Deriv Component Generator... 💪');
 
   String componentName = ask('# enter component name [example: RegisterUser]:');
 
