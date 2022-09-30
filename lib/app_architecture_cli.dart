@@ -7,10 +7,10 @@ import 'package:dart_app_architecture_cli/extensions.dart';
 void main(List<String> args) {
   print('Flutter Deriv Component Generator... 💪');
 
-  String componentName = ask('# enter component name [example: RegisterUser]:');
+  String componentName = ask('# Enter component name [example: RegisterUser]:');
 
   final confirmed = confirm(
-    '# component name would be [$componentName],  is it correct?',
+    '# Component name would be [$componentName],  is it correct?',
     defaultValue: true,
   );
 
@@ -18,14 +18,10 @@ void main(List<String> args) {
     return;
   }
 
-  String path = './lib/${componentName.toSnakeCase}_component';
-
-  final bool pathConfirmed =
-      confirm('# is path [$path] correct?', defaultValue: true);
-
-  if (!pathConfirmed) {
-    path = ask('# enter correct path:');
-  }
+  final String path = ask(
+    '# Enter component path:',
+    defaultValue: './lib/${componentName.toSnakeCase}_component',
+  );
 
   createDir(path, recursive: true);
 
