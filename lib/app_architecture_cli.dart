@@ -4,7 +4,9 @@ import 'package:dcli/dcli.dart';
 
 import 'package:dart_app_architecture_cli/extensions.dart';
 
-void main(List<String> args) {
+void main(List<String> args) => _generateComponent();
+
+void _generateComponent() {
   print(blue('*** Flutter Deriv Component Generator ***'));
 
   String componentName = ask(
