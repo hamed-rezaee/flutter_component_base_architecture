@@ -7,7 +7,7 @@ import 'package:dart_app_architecture_cli/extensions.dart';
 void main(List<String> args) => _generateComponent();
 
 void _generateComponent() {
-  print(blue('*** Deriv Component Generator ***'));
+  print(blue('Deriv Component Generator:'));
 
   String componentName = ask(
     green('# Enter component name'),
@@ -23,10 +23,8 @@ void _generateComponent() {
     return;
   }
 
-  final String path = ask(
-    green('# Enter component path'),
-    defaultValue: './lib/${componentName.toSnakeCase}_component',
-  );
+  final String path =
+      '${ask(green('# Enter component path'), defaultValue: './lib')}/${componentName.toSnakeCase}_component';
 
   final String dataPath = '$path/data';
   final String repositoriesPath = '$dataPath/repositories';
@@ -49,13 +47,13 @@ void _generateComponent() {
       domainPath: domainPath,
       presentationPath: presentationPath,
     );
+
+    print(
+      '${blue('Component ')}${red(componentName)}${blue(' has been created successfully.')}',
+    );
   } on Exception catch (e) {
     print(red('$e'));
   }
-
-  print(
-    '${blue('Component ')}${red(componentName)}${blue(' has been created successfully.')} 🎉 🎉 🎉',
-  );
 }
 
 void _createDirectories({
