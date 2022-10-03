@@ -31,27 +31,63 @@ void main(List<String> args) {
   final String domainPath = '$path/domain';
   final String presentationPath = '$path/presentation';
 
-  createDir(path, recursive: true);
-  createDir(dataPath, recursive: true);
-  createDir(repositoriesPath, recursive: true);
-  createDir(domainPath, recursive: true);
-  createDir(presentationPath, recursive: true);
+  try {
+    _createDirectories(
+      path: path,
+      dataPath: dataPath,
+      repositoriesPath: repositoriesPath,
+      domainPath: domainPath,
+      presentationPath: presentationPath,
+    );
 
-  createModel(path: dataPath, name: componentName);
-  createRepository(path: repositoriesPath, name: componentName);
-
-  createEntity(path: domainPath, name: componentName);
-  createService(path: domainPath, name: componentName);
-
-  createCubit(path: presentationPath, name: componentName);
-  createWidget(path: presentationPath, name: componentName);
+    _generateComponents(
+      dataPath: dataPath,
+      componentName: componentName,
+      repositoriesPath: repositoriesPath,
+      domainPath: domainPath,
+      presentationPath: presentationPath,
+    );
+  } on Exception catch (e) {
+    print(red('$e'));
+  }
 
   print(
     '${blue('Component ')}${red(componentName)}${blue(' has been created successfully.')} 🎉 🎉 🎉',
   );
 }
 
-void createModel({required String path, required String name}) {
+void _createDirectories({
+  required String path,
+  required String dataPath,
+  required String repositoriesPath,
+  required String domainPath,
+  required String presentationPath,
+}) {
+  createDir(path, recursive: true);
+  createDir(dataPath, recursive: true);
+  createDir(repositoriesPath, recursive: true);
+  createDir(domainPath, recursive: true);
+  createDir(presentationPath, recursive: true);
+}
+
+void _generateComponents({
+  required String dataPath,
+  required String componentName,
+  required String repositoriesPath,
+  required String domainPath,
+  required String presentationPath,
+}) {
+  _generateModel(path: dataPath, name: componentName);
+  _generateRepository(path: repositoriesPath, name: componentName);
+
+  _generateEntity(path: domainPath, name: componentName);
+  _generateService(path: domainPath, name: componentName);
+
+  _generateCubit(path: presentationPath, name: componentName);
+  _generateWidget(path: presentationPath, name: componentName);
+}
+
+void _generateModel({required String path, required String name}) {
   '$path/${name.toSnakeCase}_model.dart'.write(
     '''
       class ${name}Model {
@@ -62,7 +98,7 @@ void createModel({required String path, required String name}) {
   );
 }
 
-void createRepository({required String path, required String name}) {
+void _generateRepository({required String path, required String name}) {
   '$path/base_${name.toSnakeCase}_repository.dart'.write(
     '''
       import 'package:flutter_app_architecture/structure/data/base_repository.dart';
@@ -80,7 +116,7 @@ void createRepository({required String path, required String name}) {
   );
 }
 
-void createEntity({required String path, required String name}) {
+void _generateEntity({required String path, required String name}) {
   '$path/${name.toSnakeCase}_repository.dart'.write(
     '''
       import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
@@ -96,7 +132,7 @@ void createEntity({required String path, required String name}) {
   );
 }
 
-createService({required String path, required String name}) {
+_generateService({required String path, required String name}) {
   '$path/${name.toSnakeCase}_service.dart'.write(
     '''
       import 'package:flutter_app_architecture/structure/domain/base_service.dart';
@@ -109,7 +145,7 @@ createService({required String path, required String name}) {
   );
 }
 
-createCubit({required String path, required String name}) {
+_generateCubit({required String path, required String name}) {
   '$path/${name.toSnakeCase}_cubit.dart'.write(
     '''
       import 'package:flutter_app_architecture/structure/presentation/state_manager/base_cubit.dart';
@@ -128,7 +164,7 @@ createCubit({required String path, required String name}) {
   );
 }
 
-createWidget({required String path, required String name}) {
+_generateWidget({required String path, required String name}) {
   '$path/${name.toSnakeCase}_widget.dart'.write(
     '''
       import 'package:flutter/material.dart';
