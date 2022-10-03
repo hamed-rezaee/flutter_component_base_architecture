@@ -7,7 +7,7 @@ import 'package:dart_app_architecture_cli/extensions.dart';
 void main(List<String> args) => _generateComponent();
 
 void _generateComponent() {
-  print(blue('*** Flutter Deriv Component Generator ***'));
+  print(blue('*** Deriv Component Generator ***'));
 
   String componentName = ask(
     green('# Enter component name'),
