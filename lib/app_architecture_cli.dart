@@ -29,7 +29,7 @@ void _generateComponent() {
   );
 
   final String dataPath = '$path/data';
-  final String repositoriesPath = '$path/repositories';
+  final String repositoriesPath = '$dataPath/repositories';
   final String domainPath = '$path/domain';
   final String presentationPath = '$path/presentation';
 
@@ -84,6 +84,7 @@ void _generateComponents({
 
   _generateEntity(path: domainPath, name: componentName);
   _generateService(path: domainPath, name: componentName);
+  _generateBaseRepository(path: domainPath, name: componentName);
 
   _generateCubit(path: presentationPath, name: componentName);
   _generateWidget(path: presentationPath, name: componentName);
@@ -100,7 +101,7 @@ void _generateModel({required String path, required String name}) {
   );
 }
 
-void _generateRepository({required String path, required String name}) {
+void _generateBaseRepository({required String path, required String name}) {
   '$path/base_${name.toSnakeCase}_repository.dart'.write(
     '''
       import 'package:flutter_app_architecture/structure/data/base_repository.dart';
@@ -109,10 +110,12 @@ void _generateRepository({required String path, required String name}) {
     '''
         .dartFormat,
   );
+}
 
+void _generateRepository({required String path, required String name}) {
   '$path/${name.toSnakeCase}_repository.dart'.write(
     '''
-      class Base${name}Repository extends Base${name}Repository {}
+      class ${name}Repository extends Base${name}Repository {}
     '''
         .dartFormat,
   );

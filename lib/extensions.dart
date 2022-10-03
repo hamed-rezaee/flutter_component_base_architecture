@@ -4,9 +4,5 @@ import 'package:recase/recase.dart';
 extension StringExtension on String {
   String get toSnakeCase => ReCase(this).snakeCase;
 
-  String get dartFormat {
-    final DartFormatter formatter = DartFormatter(pageWidth: 80);
-
-    return formatter.format(this);
-  }
+  String get dartFormat => DartFormatter(pageWidth: 80).format(this);
 }
