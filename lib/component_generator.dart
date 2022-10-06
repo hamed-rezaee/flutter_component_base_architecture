@@ -10,23 +10,20 @@ void main(List<String> args) => _generateComponent();
 void _generateComponent() {
   print(blue('Deriv Component Generator:'));
 
-  final String componentName = ask(
-    green('# Enter component name'),
-    validator: Ask.alpha,
-    defaultValue: 'RegisterUser',
-  );
+  String? componentName;
 
-  final bool confirmed = confirm(
-    '${green('# Component name would be')} ${orange(componentName)}',
-    defaultValue: true,
-  );
-
-  if (!confirmed) {
-    return;
+  while (componentName == null) {
+    componentName = _getComponentName();
   }
 
+  final String postfix = ask(
+    green('# Enter component directory postfix'),
+    defaultValue: 'component',
+    validator: Ask.alpha,
+  );
+
   final String path =
-      '${ask(green('# Enter component path'), defaultValue: './lib')}/${componentName.toSnakeCase}_component';
+      '${ask(green('# Enter component path'), defaultValue: './lib')}/${componentName.toSnakeCase}_$postfix';
 
   final String dataPath = '$path/data';
   final String repositoriesPath = '$dataPath/repositories';
@@ -56,6 +53,21 @@ void _generateComponent() {
   } on Exception catch (e) {
     print(red('$e'));
   }
+}
+
+String? _getComponentName() {
+  final String componentName = ask(
+    green('# Enter component name'),
+    defaultValue: 'RegisterUser',
+    validator: Ask.alpha,
+  );
+
+  final bool confirmed = confirm(
+    '${green('# Component name would be')} ${orange(componentName)}',
+    defaultValue: true,
+  );
+
+  return confirmed ? componentName : null;
 }
 
 void _createDirectories({
