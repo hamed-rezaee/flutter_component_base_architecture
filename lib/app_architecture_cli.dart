@@ -1,4 +1,5 @@
 #! /usr/bin/env dcli
+// ignore_for_file: avoid_print
 
 import 'package:dcli/dcli.dart';
 
@@ -9,13 +10,14 @@ void main(List<String> args) => _generateComponent();
 void _generateComponent() {
   print(blue('Deriv Component Generator:'));
 
-  String componentName = ask(
+  final String componentName = ask(
     green('# Enter component name'),
+    validator: Ask.alpha,
     defaultValue: 'RegisterUser',
   );
 
-  final confirmed = confirm(
-    '${green('# Component name would be')} ${red(componentName)}',
+  final bool confirmed = confirm(
+    '${green('# Component name would be')} ${orange(componentName)}',
     defaultValue: true,
   );
 
@@ -49,7 +51,7 @@ void _generateComponent() {
     );
 
     print(
-      '${blue('Component ')}${red(componentName)}${blue(' has been created successfully.')}',
+      '${blue('Component ')}${orange(componentName)}${blue(' has been created successfully.')}',
     );
   } on Exception catch (e) {
     print(red('$e'));
@@ -89,7 +91,9 @@ void _generateComponents({
 }
 
 void _generateModel({required String path, required String name}) {
-  '$path/${name.toSnakeCase}_model.dart'.write(
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/${nameSnakeCase}_model.dart'.write(
     '''
       class ${name}Model {
         ${name}Model();
@@ -100,9 +104,11 @@ void _generateModel({required String path, required String name}) {
 }
 
 void _generateBaseRepository({required String path, required String name}) {
-  '$path/base_${name.toSnakeCase}_repository.dart'.write(
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/base_${nameSnakeCase}_repository.dart'.write(
     '''
-      import 'package:flutter_app_architecture/structure/data/base_repository.dart';
+      import 'package:flutter_app_architecture/components.dart';
 
       class Base${name}Repository extends BaseRepository {}
     '''
@@ -111,8 +117,12 @@ void _generateBaseRepository({required String path, required String name}) {
 }
 
 void _generateRepository({required String path, required String name}) {
-  '$path/${name.toSnakeCase}_repository.dart'.write(
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/${nameSnakeCase}_repository.dart'.write(
     '''
+      import '../../domain/base_${nameSnakeCase}_repository.dart';
+
       class ${name}Repository extends Base${name}Repository {}
     '''
         .dartFormat,
@@ -120,9 +130,11 @@ void _generateRepository({required String path, required String name}) {
 }
 
 void _generateEntity({required String path, required String name}) {
-  '$path/${name.toSnakeCase}_repository.dart'.write(
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/${nameSnakeCase}_repository.dart'.write(
     '''
-      import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
+      import 'package:flutter_app_architecture/components.dart';
 
       class ${name}Entity extends BaseEntity {
         ${name}Entity();
@@ -135,10 +147,15 @@ void _generateEntity({required String path, required String name}) {
   );
 }
 
-_generateService({required String path, required String name}) {
-  '$path/${name.toSnakeCase}_service.dart'.write(
+void _generateService({required String path, required String name}) {
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/${nameSnakeCase}_service.dart'.write(
     '''
-      import 'package:flutter_app_architecture/structure/domain/base_service.dart';
+      import 'package:flutter_app_architecture/components.dart';
+
+      import 'base_${nameSnakeCase}_repository.dart';
+      import '${nameSnakeCase}_repository.dart';
 
       class ${name}Service extends BaseService<${name}Entity> {
         ${name}Service(Base${name}Repository repository) : super(repository);
@@ -148,13 +165,16 @@ _generateService({required String path, required String name}) {
   );
 }
 
-_generateCubit({required String path, required String name}) {
-  '$path/${name.toSnakeCase}_cubit.dart'.write(
-    '''
-      import 'package:flutter_app_architecture/structure/presentation/state_manager/base_cubit.dart';
-      import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state.dart';
-      import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state_status.dart';
+void _generateCubit({required String path, required String name}) {
+  final String nameSnakeCase = name.toSnakeCase;
 
+  '$path/${nameSnakeCase}_cubit.dart'.write(
+    '''
+      import 'package:flutter_app_architecture/components.dart';
+
+      import '../domain/${nameSnakeCase}_repository.dart';
+      import '../domain/${nameSnakeCase}_service.dart';
+      
       class ${name}Cubit extends BaseCubit<${name}Entity> {
         ${name}Cubit({required ${name}Service service})
             : super(
@@ -167,15 +187,18 @@ _generateCubit({required String path, required String name}) {
   );
 }
 
-_generateWidget({required String path, required String name}) {
-  '$path/${name.toSnakeCase}_widget.dart'.write(
+void _generateWidget({required String path, required String name}) {
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/${nameSnakeCase}_widget.dart'.write(
     '''
       import 'package:flutter/material.dart';
 
-      import 'package:flutter_app_architecture/structure/domain/base_entity.dart';
-      import 'package:flutter_app_architecture/structure/presentation/base_widget.dart';
-      import 'package:flutter_app_architecture/structure/presentation/state_manager/base_state.dart';
+      import 'package:flutter_app_architecture/components.dart';
 
+      import '../domain/${nameSnakeCase}_repository.dart';
+      import '${nameSnakeCase}_cubit.dart';
+      
       class ${name}Widget extends StatelessWidget {
         @override
         Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Cubit>(
