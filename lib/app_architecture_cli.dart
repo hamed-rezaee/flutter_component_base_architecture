@@ -176,7 +176,7 @@ void _generateCubit({required String path, required String name}) {
       import '../domain/${nameSnakeCase}_service.dart';
       
       class ${name}Cubit extends BaseCubit<${name}Entity> {
-        ${name}Cubit({required ${name}Service service})
+        ${name}Cubit({${name}Service? service})
             : super(
                 service: service,
                 initialState: BaseState<${name}Entity>(status: BaseStateStatus.initial),
