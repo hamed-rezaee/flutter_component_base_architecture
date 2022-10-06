@@ -3,7 +3,7 @@
 
 import 'package:dcli/dcli.dart';
 
-import 'package:dart_app_architecture_cli/extensions.dart';
+import 'extensions.dart';
 
 void main(List<String> args) => _generateComponent();
 
