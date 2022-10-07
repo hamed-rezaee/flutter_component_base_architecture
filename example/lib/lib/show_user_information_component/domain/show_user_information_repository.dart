@@ -4,7 +4,7 @@ import 'package:flutter_app_architecture/components.dart';
 class ShowUserInformationEntity extends BaseEntity {
   ShowUserInformationEntity(this.name, this.birthdate);
 
-  factory ShowUserInformationEntity.getEntity(ShowUserInformationModel model) =>
+  factory ShowUserInformationEntity.map(ShowUserInformationModel model) =>
       ShowUserInformationEntity(model.name, DateTime.parse(model.birthdate));
 
   final String name;
