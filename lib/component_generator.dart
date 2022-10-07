@@ -122,7 +122,7 @@ void _generateBaseRepository({required String path, required String name}) {
     '''
       import 'package:flutter_app_architecture/components.dart';
 
-      class Base${name}Repository extends BaseRepository {}
+      abstract class Base${name}Repository extends BaseRepository {}
     '''
         .dartFormat,
   );
