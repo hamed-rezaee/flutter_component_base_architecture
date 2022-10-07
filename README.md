@@ -1,2 +1,11 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Component Generator
+
+## Component Architecture
+
+![Component Architecture](/component_architecture.png)
+
+## Getting Started
+
+```
+$ dcli compile <Path of component_generator.dart>
+```
