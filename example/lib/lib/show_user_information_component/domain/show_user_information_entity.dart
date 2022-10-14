@@ -1,4 +1,5 @@
 import 'package:example/lib/show_user_information_component/data/show_user_information_model.dart';
+
 import 'package:flutter_app_architecture/components.dart';
 
 class ShowUserInformationEntity extends BaseEntity {

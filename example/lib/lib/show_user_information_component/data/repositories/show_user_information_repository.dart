@@ -1,5 +1,4 @@
-import '../../domain/base_show_user_information_repository.dart';
-import '../show_user_information_model.dart';
+import '../../show_user_information_component.dart';
 
 class ShowUserInformationRepository extends BaseShowUserInformationRepository {
   @override

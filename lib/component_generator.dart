@@ -40,11 +40,13 @@ void _generateComponent() {
     );
 
     _generateComponents(
+      path: path,
       dataPath: dataPath,
       componentName: componentName,
       repositoriesPath: repositoriesPath,
       domainPath: domainPath,
       presentationPath: presentationPath,
+      postfix: postfix,
     );
 
     print(
@@ -85,21 +87,54 @@ void _createDirectories({
 }
 
 void _generateComponents({
+  required String path,
   required String dataPath,
   required String componentName,
   required String repositoriesPath,
   required String domainPath,
   required String presentationPath,
+  required String postfix,
 }) {
-  _generateModel(path: dataPath, name: componentName);
-  _generateRepository(path: repositoriesPath, name: componentName);
+  _generateImports(path: path, name: componentName, postfix: postfix);
 
-  _generateEntity(path: domainPath, name: componentName);
-  _generateService(path: domainPath, name: componentName);
+  _generateModel(path: dataPath, name: componentName);
+  _generateRepository(
+    path: repositoriesPath,
+    name: componentName,
+    postfix: postfix,
+  );
+
+  _generateEntity(path: domainPath, name: componentName, postfix: postfix);
+  _generateService(path: domainPath, name: componentName, postfix: postfix);
   _generateBaseRepository(path: domainPath, name: componentName);
 
-  _generateCubit(path: presentationPath, name: componentName);
-  _generateWidget(path: presentationPath, name: componentName);
+  _generateCubit(path: presentationPath, name: componentName, postfix: postfix);
+  _generateWidget(
+    path: presentationPath,
+    name: componentName,
+    postfix: postfix,
+  );
+}
+
+void _generateImports({
+  required String path,
+  required String name,
+  required String postfix,
+}) {
+  final String nameSnakeCase = name.toSnakeCase;
+
+  '$path/${nameSnakeCase}_$postfix.dart'.write(
+    '''
+      export 'data/${nameSnakeCase}_model.dart';
+      export 'data/repositories/${nameSnakeCase}_repository.dart';
+      export 'domain/base_${nameSnakeCase}_repository.dart';
+      export 'domain/${nameSnakeCase}_entity.dart';
+      export 'domain/${nameSnakeCase}_service.dart';
+      export 'presentation/${nameSnakeCase}_cubit.dart';
+      export 'presentation/${nameSnakeCase}_widget.dart';
+    '''
+        .dartFormat,
+  );
 }
 
 void _generateModel({required String path, required String name}) {
@@ -131,12 +166,16 @@ void _generateBaseRepository({required String path, required String name}) {
   );
 }
 
-void _generateRepository({required String path, required String name}) {
+void _generateRepository({
+  required String path,
+  required String name,
+  required String postfix,
+}) {
   final String nameSnakeCase = name.toSnakeCase;
 
   '$path/${nameSnakeCase}_repository.dart'.write(
     '''
-      import '../../domain/base_${nameSnakeCase}_repository.dart';
+      import '../../${nameSnakeCase}_$postfix.dart';
 
       class ${name}Repository extends Base${name}Repository {}
     '''
@@ -144,14 +183,18 @@ void _generateRepository({required String path, required String name}) {
   );
 }
 
-void _generateEntity({required String path, required String name}) {
+void _generateEntity({
+  required String path,
+  required String name,
+  required String postfix,
+}) {
   final String nameSnakeCase = name.toSnakeCase;
 
-  '$path/${nameSnakeCase}_repository.dart'.write(
+  '$path/${nameSnakeCase}_entity.dart'.write(
     '''
       import 'package:flutter_app_architecture/components.dart';
 
-      import '../data/${nameSnakeCase}_model.dart';
+      import '../${nameSnakeCase}_$postfix.dart';
 
       class ${name}Entity extends BaseEntity {
         ${name}Entity();
@@ -167,15 +210,18 @@ void _generateEntity({required String path, required String name}) {
   );
 }
 
-void _generateService({required String path, required String name}) {
+void _generateService({
+  required String path,
+  required String name,
+  required String postfix,
+}) {
   final String nameSnakeCase = name.toSnakeCase;
 
   '$path/${nameSnakeCase}_service.dart'.write(
     '''
       import 'package:flutter_app_architecture/components.dart';
 
-      import 'base_${nameSnakeCase}_repository.dart';
-      import '${nameSnakeCase}_repository.dart';
+      import '../${nameSnakeCase}_$postfix.dart';
 
       class ${name}Service extends BaseService<${name}Entity> {
         ${name}Service(Base${name}Repository repository) : super(repository);
@@ -185,15 +231,18 @@ void _generateService({required String path, required String name}) {
   );
 }
 
-void _generateCubit({required String path, required String name}) {
+void _generateCubit({
+  required String path,
+  required String name,
+  required String postfix,
+}) {
   final String nameSnakeCase = name.toSnakeCase;
 
   '$path/${nameSnakeCase}_cubit.dart'.write(
     '''
       import 'package:flutter_app_architecture/components.dart';
 
-      import '../domain/${nameSnakeCase}_repository.dart';
-      import '../domain/${nameSnakeCase}_service.dart';
+      import '../${nameSnakeCase}_$postfix.dart';
       
       class ${name}Cubit extends BaseCubit<${name}Entity> {
         ${name}Cubit({${name}Service? service})
@@ -207,7 +256,11 @@ void _generateCubit({required String path, required String name}) {
   );
 }
 
-void _generateWidget({required String path, required String name}) {
+void _generateWidget({
+  required String path,
+  required String name,
+  required String postfix,
+}) {
   final String nameSnakeCase = name.toSnakeCase;
 
   '$path/${nameSnakeCase}_widget.dart'.write(
@@ -216,8 +269,7 @@ void _generateWidget({required String path, required String name}) {
 
       import 'package:flutter_app_architecture/components.dart';
 
-      import '../domain/${nameSnakeCase}_repository.dart';
-      import '${nameSnakeCase}_cubit.dart';
+      import '../${nameSnakeCase}_$postfix.dart';
       
       class ${name}Widget extends StatelessWidget {
         @override

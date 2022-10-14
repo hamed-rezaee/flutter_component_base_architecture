@@ -1,7 +1,6 @@
 import 'package:flutter_app_architecture/components.dart';
 
-import 'base_show_user_information_repository.dart';
-import 'show_user_information_repository.dart';
+import '../show_user_information_component.dart';
 
 class ShowUserInformationService
     extends BaseService<ShowUserInformationEntity> {

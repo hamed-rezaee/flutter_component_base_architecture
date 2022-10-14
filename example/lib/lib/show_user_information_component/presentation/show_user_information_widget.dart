@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_app_architecture/components.dart';
 
-import '../domain/show_user_information_repository.dart';
-import 'show_user_information_cubit.dart';
+import '../show_user_information_component.dart';
 
 class ShowUserInformationWidget extends StatelessWidget {
   @override

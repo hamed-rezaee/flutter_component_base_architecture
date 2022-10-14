@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_app_architecture/components.dart';
 
-import '../domain/show_user_information_repository.dart';
-import '../domain/show_user_information_service.dart';
+import '../show_user_information_component.dart';
 
 class ShowUserInformationCubit extends BaseCubit<ShowUserInformationEntity> {
   ShowUserInformationCubit({ShowUserInformationService? service})
