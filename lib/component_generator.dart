@@ -142,10 +142,15 @@ void _generateModel({required String path, required String name}) {
 
   '$path/${nameSnakeCase}_model.dart'.write(
     '''
+      import '../${nameSnakeCase}_component.dart';
+
       class ${name}Model {
         ${name}Model();
 
         factory ${name}Model.fromJson(Map<String, dynamic> json) =>
+          throw UnimplementedError();
+
+        ${name}Entity getEntity() =>
           throw UnimplementedError();
       }
     '''
@@ -194,13 +199,8 @@ void _generateEntity({
     '''
       import 'package:flutter_app_architecture/components.dart';
 
-      import '../${nameSnakeCase}_$postfix.dart';
-
       class ${name}Entity extends BaseEntity {
         ${name}Entity();
-
-        factory ${name}Entity.map(${name}Model model) =>
-          throw UnimplementedError();
 
         @override
         String toString() => throw UnimplementedError();  

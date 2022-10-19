@@ -8,8 +8,5 @@ class ShowUserInformationService
       : super(repository);
 
   Future<ShowUserInformationEntity> fetchUserInformation() async =>
-      ShowUserInformationEntity.map(
-        await (repository as BaseShowUserInformationRepository)
-            .fetchUserInformation(),
-      );
+      (repository as BaseShowUserInformationRepository).fetchUserInformation();
 }
