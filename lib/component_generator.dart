@@ -65,26 +65,24 @@ void _generateComponent() {
 List<ModelStructure> _getFields() {
   final List<ModelStructure> modelStructures = <ModelStructure>[];
 
-  while (confirm('${green('# Add model field')}', defaultValue: true)) {
+  while (confirm('${green('# Add model field')}')) {
     final String fieldName = ask(
-      green('# Enter field name'),
-      defaultValue: 'firstName',
+      green('# Enter field name (e.g. firstName)'),
       validator: Ask.alpha,
     );
 
     final String fieldType = ask(
-      green('# Enter field type'),
-      defaultValue: 'string',
+      green('# Enter field type (bool | int | double | string | list | set)'),
       validator: Ask.inList(dartTypes.keys.toList(), caseSensitive: true),
     );
 
     final bool isRequired = confirm(
-      green('# Is required?'),
+      green('# Required'),
       defaultValue: true,
     );
 
     final bool isNullable = confirm(
-      green('# Is nullable?'),
+      green('# Nullable'),
       defaultValue: false,
     );
 
@@ -201,10 +199,15 @@ void _generateModel({
       /// ${name.toSentenceCase} model.
       class ${name}Model {
         ${ModelStructure.generateConstructor(name: name, modelStructures: modelStructures)}
+
         ${ModelStructure.generateFromJson(name: name, modelStructures: modelStructures)}
+
         ${ModelStructure.generateFromEntity(name: name, modelStructures: modelStructures)}
+
         ${ModelStructure.generateFields(modelStructures)}
+
         ${ModelStructure.generateToJson(name: name, modelStructures: modelStructures)}
+        
         ${ModelStructure.generateToEntity(name: name, modelStructures: modelStructures)}
       }
     '''
@@ -219,6 +222,7 @@ void _generateBaseRepository({required String path, required String name}) {
     '''
       import 'package:flutter_app_architecture/components.dart';
 
+      /// Base ${name.toSentenceLowerCase} repository.
       abstract class Base${name}Repository extends BaseRepository {}
     '''
         .dartFormat,
@@ -236,6 +240,7 @@ void _generateRepository({
     '''
       import '../../${nameSnakeCase}_$postfix.dart';
 
+      /// ${name.toSentenceCase} repository.
       class ${name}Repository extends Base${name}Repository {}
     '''
         .dartFormat,
@@ -253,7 +258,9 @@ void _generateEntity({
     '''
       import 'package:flutter_app_architecture/components.dart';
 
+      /// ${name.toSentenceCase} entity.
       class ${name}Entity extends BaseEntity {
+        /// Initializes [${name}Entity].
         ${name}Entity();
 
         @override
@@ -277,7 +284,9 @@ void _generateService({
 
       import '../${nameSnakeCase}_$postfix.dart';
 
+      /// ${name.toSentenceCase} service.
       class ${name}Service extends BaseService<${name}Entity> {
+        /// Initializes [${name}Service].
         ${name}Service(Base${name}Repository repository) : super(repository);
       }
     '''
@@ -298,7 +307,9 @@ void _generateCubit({
 
       import '../${nameSnakeCase}_$postfix.dart';
       
+      /// ${name.toSentenceCase} cubit.
       class ${name}Cubit extends BaseCubit<${name}Entity> {
+        /// Initializes [${name}Cubit].
         ${name}Cubit({${name}Service? service})
             : super(
                 service: service,
@@ -325,6 +336,7 @@ void _generateWidget({
 
       import '../${nameSnakeCase}_$postfix.dart';
       
+      /// ${name.toSentenceCase} widget.
       class ${name}Widget extends StatelessWidget {
         @override
         Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Cubit>(

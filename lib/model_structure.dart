@@ -74,7 +74,7 @@ class ModelStructure {
     }
 
     return '''
-      /// Generates model from a json.
+      /// Creates an instance from JSON.
       factory ${name}Model.fromJson(Map<String, dynamic> json) =>
         ${name}Model($body);
     ''';
@@ -94,7 +94,7 @@ class ModelStructure {
     }
 
     return '''
-      /// Generates model from [${name}Entity].
+      /// Creates an instance from [${name}Entity].
       factory ${name}Model.fromEntity(${name}Entity entity) =>
         ${name}Model($body);
     ''';
@@ -114,7 +114,7 @@ class ModelStructure {
     }
 
     return '''
-      /// Converts model to json.
+      //// Converts an instance to JSON.
       Map<String, dynamic> toJson() {
         final Map<String, dynamic> json = <String, dynamic>{};
 
@@ -139,7 +139,7 @@ class ModelStructure {
     }
 
     return '''
-      /// Converts model to [${name}Entity].
+      /// Converts an instance to [${name}Entity].
       ${name}Entity toEntity() =>
         ${name}Entity($body);
     ''';

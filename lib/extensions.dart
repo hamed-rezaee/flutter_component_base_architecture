@@ -9,6 +9,9 @@ extension StringExtension on String {
   /// Recase string to sentence case.
   String get toSentenceCase => ReCase(this).sentenceCase;
 
+  /// Recase string to sentence lower case.
+  String get toSentenceLowerCase => ReCase(this).sentenceCase.toLowerCase();
+
   /// Formats string to dart code.
   String get dartFormat => DartFormatter(pageWidth: 80).format(this);
 }
