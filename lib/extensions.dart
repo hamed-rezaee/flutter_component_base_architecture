@@ -6,6 +6,9 @@ extension StringExtension on String {
   /// Recase string to snake case.
   String get toSnakeCase => ReCase(this).snakeCase;
 
+  /// Recase string to sentence case.
+  String get toSentenceCase => ReCase(this).sentenceCase;
+
   /// Formats string to dart code.
   String get dartFormat => DartFormatter(pageWidth: 80).format(this);
 }

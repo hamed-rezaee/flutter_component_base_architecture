@@ -1,3 +1,5 @@
+import 'package:dart_app_architecture_cli/extensions.dart';
+
 /// Model structure class.
 class ModelStructure {
   /// Initializes [ModelStructure].
@@ -50,7 +52,9 @@ class ModelStructure {
     final StringBuffer body = StringBuffer();
 
     for (final ModelStructure modelStructure in modelStructures) {
-      body.write(modelStructure.getFieldDefinition);
+      body
+        ..write('/// ${modelStructure.name.toSentenceCase}.\n')
+        ..write(modelStructure.getFieldDefinition);
     }
 
     return '$body';
