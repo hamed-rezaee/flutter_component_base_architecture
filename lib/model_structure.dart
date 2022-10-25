@@ -45,6 +45,7 @@ class ModelStructure {
   static String generateConstructor({
     required String name,
     required List<ModelStructure> modelStructures,
+    bool isModel = true,
   }) {
     _sortModelStructures(modelStructures);
 
@@ -55,8 +56,8 @@ class ModelStructure {
     }
 
     return '''
-      /// Initializes [${name}Model].
-      ${name}Model({$body});
+      /// Initializes [$name${isModel ? 'Model' : 'Entity'}].
+      $name${isModel ? 'Model' : 'Entity'}({$body});
     ''';
   }
 

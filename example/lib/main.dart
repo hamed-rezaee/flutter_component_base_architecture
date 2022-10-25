@@ -1,10 +1,11 @@
-import 'package:example/lib/show_user_information_component/data/repositories/show_user_information_repository.dart';
-import 'package:example/lib/show_user_information_component/domain/show_user_information_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_deriv_bloc_manager/manager.dart';
 
-import 'lib/show_user_information_component/presentation/show_user_information_cubit.dart';
-import 'lib/show_user_information_component/presentation/show_user_information_widget.dart';
+import 'package:example/show_user_information_component/data/repositories/show_user_information_repository.dart';
+import 'package:example/show_user_information_component/domain/show_user_information_service.dart';
+
+import 'show_user_information_component/presentation/show_user_information_cubit.dart';
+import 'show_user_information_component/presentation/show_user_information_widget.dart';
 
 void main() => runApp(const App());
 

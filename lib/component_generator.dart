@@ -145,14 +145,18 @@ void _generateComponents({
     name: componentName,
     modelStructures: modelStructures,
   );
-
   _generateRepository(
     path: repositoriesPath,
     name: componentName,
     postfix: postfix,
   );
 
-  _generateEntity(path: domainPath, name: componentName, postfix: postfix);
+  _generateEntity(
+    path: domainPath,
+    name: componentName,
+    modelStructures: modelStructures,
+    postfix: postfix,
+  );
   _generateService(path: domainPath, name: componentName, postfix: postfix);
   _generateBaseRepository(path: domainPath, name: componentName);
 
@@ -251,6 +255,7 @@ void _generateEntity({
   required String path,
   required String name,
   required String postfix,
+  required List<ModelStructure> modelStructures,
 }) {
   final String nameSnakeCase = name.toSnakeCase;
 
@@ -260,8 +265,9 @@ void _generateEntity({
 
       /// ${name.toSentenceCase} entity.
       class ${name}Entity extends BaseEntity {
-        /// Initializes [${name}Entity].
-        ${name}Entity();
+        ${ModelStructure.generateConstructor(name: name, modelStructures: modelStructures, isModel: false)}
+
+        ${ModelStructure.generateFields(modelStructures)}
 
         @override
         String toString() => throw UnimplementedError();  
