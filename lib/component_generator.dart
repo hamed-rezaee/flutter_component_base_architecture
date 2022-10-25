@@ -3,6 +3,8 @@
 
 import 'package:dcli/dcli.dart';
 
+import 'package:dart_app_architecture_cli/model_structure.dart';
+
 import 'extensions.dart';
 
 void main(List<String> args) => _generateComponent();
@@ -21,6 +23,8 @@ void _generateComponent() {
     defaultValue: 'component',
     validator: Ask.alpha,
   );
+
+  final List<ModelStructure> modelStructures = _getFields();
 
   final String path =
       '${ask(green('# Enter component path'), defaultValue: './lib')}/${componentName.toSnakeCase}_$postfix';
@@ -47,6 +51,7 @@ void _generateComponent() {
       domainPath: domainPath,
       presentationPath: presentationPath,
       postfix: postfix,
+      modelStructures: modelStructures,
     );
 
     print(
@@ -55,6 +60,45 @@ void _generateComponent() {
   } on Exception catch (e) {
     print(red('$e'));
   }
+}
+
+List<ModelStructure> _getFields() {
+  final List<ModelStructure> modelStructures = <ModelStructure>[];
+
+  while (confirm('${green('# Add model field')}', defaultValue: true)) {
+    final String fieldName = ask(
+      green('# Enter field name'),
+      defaultValue: 'firstName',
+      validator: Ask.alpha,
+    );
+
+    final String fieldType = ask(
+      green('# Enter field type'),
+      defaultValue: 'string',
+      validator: Ask.inList(dartTypes.keys.toList(), caseSensitive: true),
+    );
+
+    final bool isRequired = confirm(
+      green('# Is required?'),
+      defaultValue: true,
+    );
+
+    final bool isNullable = confirm(
+      green('# Is nullable?'),
+      defaultValue: false,
+    );
+
+    final ModelStructure modelStructure = ModelStructure(
+      name: fieldName,
+      type: dartTypes[fieldType.toLowerCase()]!,
+      isRequired: isRequired,
+      isNullable: isNullable,
+    );
+
+    modelStructures.add(modelStructure);
+  }
+
+  return modelStructures;
 }
 
 String? _getComponentName() {
@@ -94,10 +138,16 @@ void _generateComponents({
   required String domainPath,
   required String presentationPath,
   required String postfix,
+  required List<ModelStructure> modelStructures,
 }) {
   _generateImports(path: path, name: componentName, postfix: postfix);
 
-  _generateModel(path: dataPath, name: componentName);
+  _generateModel(
+    path: dataPath,
+    name: componentName,
+    modelStructures: modelStructures,
+  );
+
   _generateRepository(
     path: repositoriesPath,
     name: componentName,
@@ -137,7 +187,11 @@ void _generateImports({
   );
 }
 
-void _generateModel({required String path, required String name}) {
+void _generateModel({
+  required String path,
+  required String name,
+  required List<ModelStructure> modelStructures,
+}) {
   final String nameSnakeCase = name.toSnakeCase;
 
   '$path/${nameSnakeCase}_model.dart'.write(
@@ -145,10 +199,12 @@ void _generateModel({required String path, required String name}) {
       import '../${nameSnakeCase}_component.dart';
 
       class ${name}Model {
-        ${name}Model();
+        ${_generateConstructor(name: name, modelStructures: modelStructures)}
 
         factory ${name}Model.fromJson(Map<String, dynamic> json) =>
           throw UnimplementedError();
+
+          ${_generateFields(modelStructures)}
 
         ${name}Entity getEntity() =>
           throw UnimplementedError();
@@ -156,6 +212,33 @@ void _generateModel({required String path, required String name}) {
     '''
         .dartFormat,
   );
+}
+
+String _generateConstructor({
+  required String name,
+  required List<ModelStructure> modelStructures,
+}) {
+  ModelStructure.sortModelStructures(modelStructures);
+
+  final StringBuffer body = StringBuffer();
+
+  for (final ModelStructure modelStructure in modelStructures) {
+    body.write(modelStructure.getConstructorDefinition());
+  }
+
+  return '${name}Model({$body});';
+}
+
+String _generateFields(List<ModelStructure> modelStructures) {
+  ModelStructure.sortModelStructures(modelStructures);
+
+  final StringBuffer body = StringBuffer();
+
+  for (final ModelStructure modelStructure in modelStructures) {
+    body.write(modelStructure.getFieldDefinition());
+  }
+
+  return '$body';
 }
 
 void _generateBaseRepository({required String path, required String name}) {
