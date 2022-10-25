@@ -204,9 +204,15 @@ void _generateModel({
         factory ${name}Model.fromJson(Map<String, dynamic> json) =>
           throw UnimplementedError();
 
-          ${ModelStructure.generateFields(modelStructures)}
+        factory ${name}Model.fromEntity(${name}Entity entity) =>
+          throw UnimplementedError();
 
-        ${name}Entity getEntity() =>
+        ${ModelStructure.generateFields(modelStructures)}
+
+        Map<String, dynamic> toJson() =>
+          throw UnimplementedError();
+
+        ${name}Entity toEntity() =>
           throw UnimplementedError();
       }
     '''

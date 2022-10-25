@@ -1,4 +1,6 @@
+/// Model structure class.
 class ModelStructure {
+  /// Initializes [ModelStructure].
   ModelStructure({
     required this.name,
     required this.type,
@@ -6,16 +8,26 @@ class ModelStructure {
     required this.isRequired,
   });
 
+  /// Model name.
   final String name;
+
+  /// Model type.
   final Type type;
+
+  /// indicates model is nullable or not.
   final bool isNullable;
+
+  /// indicates model is required or not.
   final bool isRequired;
 
+  /// Gets constructor definition.
   String get getConstructorDefinition =>
       '${isRequired ? 'required' : ''} this.$name,';
 
+  /// Gets field definition.
   String get getFieldDefinition => 'final $type${isNullable ? '?' : ''} $name;';
 
+  /// Generates model constructor.
   static String generateConstructor({
     required String name,
     required List<ModelStructure> modelStructures,
@@ -31,6 +43,7 @@ class ModelStructure {
     return '${name}Model({$body});';
   }
 
+  /// Generates model fields.
   static String generateFields(List<ModelStructure> modelStructures) {
     _sortModelStructures(modelStructures);
 
@@ -69,6 +82,7 @@ class ModelStructure {
   }
 }
 
+/// Dart types map.
 final Map<String, Type> dartTypes = <String, Type>{
   'bool': bool,
   'int': int,
