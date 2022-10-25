@@ -11,12 +11,39 @@ class ModelStructure {
   final bool isNullable;
   final bool isRequired;
 
-  String getConstructorDefinition() =>
+  String get getConstructorDefinition =>
       '${isRequired ? 'required' : ''} this.$name,';
 
-  String getFieldDefinition() => 'final $type${isNullable ? '?' : ''} $name;';
+  String get getFieldDefinition => 'final $type${isNullable ? '?' : ''} $name;';
 
-  static void sortModelStructures(List<ModelStructure> modelStructures) {
+  static String generateConstructor({
+    required String name,
+    required List<ModelStructure> modelStructures,
+  }) {
+    _sortModelStructures(modelStructures);
+
+    final StringBuffer body = StringBuffer();
+
+    for (final ModelStructure modelStructure in modelStructures) {
+      body.write(modelStructure.getConstructorDefinition);
+    }
+
+    return '${name}Model({$body});';
+  }
+
+  static String generateFields(List<ModelStructure> modelStructures) {
+    _sortModelStructures(modelStructures);
+
+    final StringBuffer body = StringBuffer();
+
+    for (final ModelStructure modelStructure in modelStructures) {
+      body.write(modelStructure.getFieldDefinition);
+    }
+
+    return '$body';
+  }
+
+  static void _sortModelStructures(List<ModelStructure> modelStructures) {
     final List<ModelStructure> requiredModels = modelStructures
         .where((ModelStructure element) => element.isRequired)
         .toList();

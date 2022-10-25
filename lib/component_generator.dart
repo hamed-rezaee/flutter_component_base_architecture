@@ -199,12 +199,12 @@ void _generateModel({
       import '../${nameSnakeCase}_component.dart';
 
       class ${name}Model {
-        ${_generateConstructor(name: name, modelStructures: modelStructures)}
+        ${ModelStructure.generateConstructor(name: name, modelStructures: modelStructures)}
 
         factory ${name}Model.fromJson(Map<String, dynamic> json) =>
           throw UnimplementedError();
 
-          ${_generateFields(modelStructures)}
+          ${ModelStructure.generateFields(modelStructures)}
 
         ${name}Entity getEntity() =>
           throw UnimplementedError();
@@ -212,33 +212,6 @@ void _generateModel({
     '''
         .dartFormat,
   );
-}
-
-String _generateConstructor({
-  required String name,
-  required List<ModelStructure> modelStructures,
-}) {
-  ModelStructure.sortModelStructures(modelStructures);
-
-  final StringBuffer body = StringBuffer();
-
-  for (final ModelStructure modelStructure in modelStructures) {
-    body.write(modelStructure.getConstructorDefinition());
-  }
-
-  return '${name}Model({$body});';
-}
-
-String _generateFields(List<ModelStructure> modelStructures) {
-  ModelStructure.sortModelStructures(modelStructures);
-
-  final StringBuffer body = StringBuffer();
-
-  for (final ModelStructure modelStructure in modelStructures) {
-    body.write(modelStructure.getFieldDefinition());
-  }
-
-  return '$body';
 }
 
 void _generateBaseRepository({required String path, required String name}) {
