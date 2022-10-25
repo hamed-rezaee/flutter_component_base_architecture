@@ -29,6 +29,18 @@ class ModelStructure {
   /// Gets field definition.
   String get getFieldDefinition => 'final $type${isNullable ? '?' : ''} $name;';
 
+  /// Gets from json definition.
+  String get getFromJsonDefinition => '$name: json[\'${name.toSnakeCase}\'],';
+
+  /// Gets from entity definition.
+  String get getFromEntityDefinition => '$name: entity.$name,';
+
+  /// Gets to json definition.
+  String get getToJsonDefinition => 'json[\'${name.toSnakeCase}\'] = $name;';
+
+  /// Gets to entity definition.
+  String get getToEntityDefinition => '$name: $name,';
+
   /// Generates model constructor.
   static String generateConstructor({
     required String name,
@@ -42,7 +54,95 @@ class ModelStructure {
       body.write(modelStructure.getConstructorDefinition);
     }
 
-    return '${name}Model({$body});';
+    return '''
+      /// Initializes [${name}Model].
+      ${name}Model({$body});
+    ''';
+  }
+
+  /// Generates form json method.
+  static String generateFromJson({
+    required String name,
+    required List<ModelStructure> modelStructures,
+  }) {
+    _sortModelStructures(modelStructures);
+
+    final StringBuffer body = StringBuffer();
+
+    for (final ModelStructure modelStructure in modelStructures) {
+      body.write(modelStructure.getFromJsonDefinition);
+    }
+
+    return '''
+      /// Generates model from a json.
+      factory ${name}Model.fromJson(Map<String, dynamic> json) =>
+        ${name}Model($body);
+    ''';
+  }
+
+  /// Generates form entity method.
+  static String generateFromEntity({
+    required String name,
+    required List<ModelStructure> modelStructures,
+  }) {
+    _sortModelStructures(modelStructures);
+
+    final StringBuffer body = StringBuffer();
+
+    for (final ModelStructure modelStructure in modelStructures) {
+      body.write(modelStructure.getFromEntityDefinition);
+    }
+
+    return '''
+      /// Generates model from [${name}Entity].
+      factory ${name}Model.fromEntity(${name}Entity entity) =>
+        ${name}Model($body);
+    ''';
+  }
+
+  /// Generates to json method.
+  static String generateToJson({
+    required String name,
+    required List<ModelStructure> modelStructures,
+  }) {
+    _sortModelStructures(modelStructures);
+
+    final StringBuffer body = StringBuffer();
+
+    for (final ModelStructure modelStructure in modelStructures) {
+      body.write(modelStructure.getToJsonDefinition);
+    }
+
+    return '''
+      /// Converts model to json.
+      Map<String, dynamic> toJson() {
+        final Map<String, dynamic> json = <String, dynamic>{};
+
+        $body
+
+        return json;
+      }
+    ''';
+  }
+
+  /// Generates to entity method.
+  static String generateToEntity({
+    required String name,
+    required List<ModelStructure> modelStructures,
+  }) {
+    _sortModelStructures(modelStructures);
+
+    final StringBuffer body = StringBuffer();
+
+    for (final ModelStructure modelStructure in modelStructures) {
+      body.write(modelStructure.getToEntityDefinition);
+    }
+
+    return '''
+      /// Converts model to [${name}Entity].
+      ${name}Entity toEntity() =>
+        ${name}Entity($body);
+    ''';
   }
 
   /// Generates model fields.

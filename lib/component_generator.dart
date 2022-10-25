@@ -200,26 +200,12 @@ void _generateModel({
 
       /// ${name.toSentenceCase} model.
       class ${name}Model {
-        /// Initializes [${name}Model].
         ${ModelStructure.generateConstructor(name: name, modelStructures: modelStructures)}
-
-        /// Generates model from a JSON.
-        factory ${name}Model.fromJson(Map<String, dynamic> json) =>
-          throw UnimplementedError();
-
-        /// Generates model from [${name}Entity].
-        factory ${name}Model.fromEntity(${name}Entity entity) =>
-          throw UnimplementedError();
-
+        ${ModelStructure.generateFromJson(name: name, modelStructures: modelStructures)}
+        ${ModelStructure.generateFromEntity(name: name, modelStructures: modelStructures)}
         ${ModelStructure.generateFields(modelStructures)}
-
-        /// Converts model to JSON.
-        Map<String, dynamic> toJson() =>
-          throw UnimplementedError();
-
-        /// Converts model to [${name}Entity].
-        ${name}Entity toEntity() =>
-          throw UnimplementedError();
+        ${ModelStructure.generateToJson(name: name, modelStructures: modelStructures)}
+        ${ModelStructure.generateToEntity(name: name, modelStructures: modelStructures)}
       }
     '''
         .dartFormat,
