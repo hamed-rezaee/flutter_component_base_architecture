@@ -3,6 +3,7 @@
 
 import 'package:dcli/dcli.dart';
 
+import 'package:dart_app_architecture_cli/component_builder.dart';
 import 'package:dart_app_architecture_cli/dart_types.dart';
 import 'package:dart_app_architecture_cli/model_structure.dart';
 
@@ -173,192 +174,66 @@ void _generateImports({
   required String path,
   required String name,
   required String postfix,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/${nameSnakeCase}_$postfix.dart'.write(
-    '''
-      export 'data/${nameSnakeCase}_model.dart';
-      export 'data/repositories/${nameSnakeCase}_repository.dart';
-      export 'domain/base_${nameSnakeCase}_repository.dart';
-      export 'domain/${nameSnakeCase}_entity.dart';
-      export 'domain/${nameSnakeCase}_service.dart';
-      export 'presentation/${nameSnakeCase}_cubit.dart';
-      export 'presentation/${nameSnakeCase}_widget.dart';
-    '''
-        .dartFormat,
-  );
-}
+}) =>
+    getFilePath(path: path, name: name, type: postfix)
+        .write(getImportsStructure(name).dartFormat);
 
 void _generateModel({
   required String path,
   required String name,
   required List<ModelStructure> modelStructures,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
+}) =>
+    getFilePath(path: path, name: name, type: 'model').write(
+      getModelStructure(
+        path: path,
+        name: name,
+        modelStructures: modelStructures,
+      ).dartFormat,
+    );
 
-  '$path/${nameSnakeCase}_model.dart'.write(
-    '''
-      import '../${nameSnakeCase}_component.dart';
-
-      /// ${name.toSentenceCase} model.
-      class ${name}Model {
-        ${ModelStructure.generateConstructor(name: name, modelStructures: modelStructures)}
-
-        ${ModelStructure.generateFromJson(name: name, modelStructures: modelStructures)}
-
-        ${ModelStructure.generateFromEntity(name: name, modelStructures: modelStructures)}
-
-        ${ModelStructure.generateFields(modelStructures)}
-
-        ${ModelStructure.generateToJson(name: name, modelStructures: modelStructures)}
-        
-        ${ModelStructure.generateToEntity(name: name, modelStructures: modelStructures)}
-      }
-    '''
-        .dartFormat,
-  );
-}
-
-void _generateBaseRepository({required String path, required String name}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/base_${nameSnakeCase}_repository.dart'.write(
-    '''
-      import 'package:flutter_app_architecture/components.dart';
-
-      /// Base ${name.toSentenceLowerCase} repository.
-      abstract class Base${name}Repository extends BaseRepository {}
-    '''
-        .dartFormat,
-  );
-}
+void _generateBaseRepository({required String path, required String name}) =>
+    getFilePath(path: path, name: name, type: 'repository', isBase: true)
+        .write(getBaseRepositoryStructure(name).dartFormat);
 
 void _generateRepository({
   required String path,
   required String name,
   required String postfix,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/${nameSnakeCase}_repository.dart'.write(
-    '''
-      import '../../${nameSnakeCase}_$postfix.dart';
-
-      /// ${name.toSentenceCase} repository.
-      class ${name}Repository extends Base${name}Repository {}
-    '''
-        .dartFormat,
-  );
-}
+}) =>
+    getFilePath(path: path, name: name, type: 'repository')
+        .write(getRepositoryStructure(name: name, postfix: postfix).dartFormat);
 
 void _generateEntity({
   required String path,
   required String name,
   required String postfix,
   required List<ModelStructure> modelStructures,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/${nameSnakeCase}_entity.dart'.write(
-    '''
-      import 'package:flutter_app_architecture/components.dart';
-
-      /// ${name.toSentenceCase} entity.
-      class ${name}Entity extends BaseEntity {
-        ${ModelStructure.generateConstructor(name: name, modelStructures: modelStructures, isModel: false)}
-
-        ${ModelStructure.generateFields(modelStructures)}
-
-        @override
-        String toString() => throw UnimplementedError();  
-      }
-    '''
-        .dartFormat,
-  );
-}
+}) =>
+    getFilePath(path: path, name: name, type: 'entity').write(
+      getEntityStructure(name: name, modelStructures: modelStructures)
+          .dartFormat,
+    );
 
 void _generateService({
   required String path,
   required String name,
   required String postfix,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/${nameSnakeCase}_service.dart'.write(
-    '''
-      import 'package:flutter_app_architecture/components.dart';
-
-      import '../${nameSnakeCase}_$postfix.dart';
-
-      /// ${name.toSentenceCase} service.
-      class ${name}Service extends BaseService<${name}Entity> {
-        /// Initializes [${name}Service].
-        ${name}Service(Base${name}Repository repository) : super(repository);
-      }
-    '''
-        .dartFormat,
-  );
-}
+}) =>
+    getFilePath(path: path, name: name, type: 'service')
+        .write(getServiceStructure(name: name, postfix: postfix).dartFormat);
 
 void _generateCubit({
   required String path,
   required String name,
   required String postfix,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/${nameSnakeCase}_cubit.dart'.write(
-    '''
-      import 'package:flutter_app_architecture/components.dart';
-
-      import '../${nameSnakeCase}_$postfix.dart';
-      
-      /// ${name.toSentenceCase} cubit.
-      class ${name}Cubit extends BaseCubit<${name}Entity> {
-        /// Initializes [${name}Cubit].
-        ${name}Cubit({${name}Service? service})
-            : super(
-                service: service,
-                initialState: BaseState<${name}Entity>(status: BaseStateStatus.initial),
-              );
-      }
-    '''
-        .dartFormat,
-  );
-}
+}) =>
+    getFilePath(path: path, name: name, type: 'cubit')
+        .write(getCubitStructure(name: name, postfix: postfix).dartFormat);
 
 void _generateWidget({
   required String path,
   required String name,
   required String postfix,
-}) {
-  final String nameSnakeCase = name.toSnakeCase;
-
-  '$path/${nameSnakeCase}_widget.dart'.write(
-    '''
-      import 'package:flutter/material.dart';
-
-      import 'package:flutter_app_architecture/components.dart';
-
-      import '../${nameSnakeCase}_$postfix.dart';
-      
-      /// ${name.toSentenceCase} widget.
-      class ${name}Widget extends StatelessWidget {
-        @override
-        Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Cubit>(
-              loadingWidgetBuilder:
-                  (BuildContext context, BaseState<BaseEntity> state) =>
-                      throw UnimplementedError(),
-              successWidgetBuilder:
-                  (BuildContext context, BaseState<BaseEntity> state) =>
-                      throw UnimplementedError(),
-              errorWidgetBuilder:
-                  (BuildContext context, BaseState<BaseEntity> state) =>
-                      throw UnimplementedError(),
-            );
-      }
-    '''
-        .dartFormat,
-  );
-}
+}) =>
+    getFilePath(path: path, name: name, type: 'widget')
+        .write(getWidgetStructure(name: name, postfix: postfix).dartFormat);
