@@ -186,13 +186,3 @@ class ModelStructure {
       ..addAll(nounRequiredModels);
   }
 }
-
-/// Dart types map.
-final Map<String, Type> dartTypes = <String, Type>{
-  'bool': bool,
-  'int': int,
-  'double': double,
-  'string': String,
-  'list': List,
-  'set': Set,
-};

@@ -3,6 +3,7 @@
 
 import 'package:dcli/dcli.dart';
 
+import 'package:dart_app_architecture_cli/dart_types.dart';
 import 'package:dart_app_architecture_cli/model_structure.dart';
 
 import 'extensions.dart';
@@ -67,12 +68,12 @@ List<ModelStructure> _getFields() {
 
   while (confirm('${green('# Add model field')}')) {
     final String fieldName = ask(
-      green('# Enter field name (e.g. firstName)'),
+      green('# Enter field name ${orange('(e.g. firstName)')}'),
       validator: Ask.alpha,
     );
 
     final String fieldType = ask(
-      green('# Enter field type (bool | int | double | string | list | set)'),
+      green('# Enter field type ${orange('${dartTypes.printKeys}')}'),
       validator: Ask.inList(dartTypes.keys.toList(), caseSensitive: true),
     );
 
