@@ -146,7 +146,7 @@ String getWidgetStructure({required String name, required String postfix}) =>
             (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
         );
       }
-      ''';
+    ''';
 
 String _generateConstructor({
   required String name,
