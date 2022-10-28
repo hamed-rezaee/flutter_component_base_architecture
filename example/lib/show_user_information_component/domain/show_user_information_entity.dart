@@ -1,11 +1,24 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:flutter_app_architecture/components.dart';
 
-class ShowUserInformationEntity extends BaseEntity {
-  ShowUserInformationEntity(this.name, this.birthdate);
+/// Show user information entity.
+class ShowUserInformationEntity extends BaseEntity with EquatableMixin {
+  /// Initializes [ShowUserInformationEntity].
+  ShowUserInformationEntity({
+    required this.name,
+    this.birthdate,
+  });
 
+  /// Name.
   final String name;
-  final DateTime birthdate;
+
+  /// Birthdate.
+  final DateTime? birthdate;
 
   @override
-  String toString() => '$name($birthdate)';
+  List<Object?> get props => <Object?>[birthdate, name];
+
+  @override
+  bool get stringify => true;
 }

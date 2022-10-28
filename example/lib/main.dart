@@ -24,19 +24,23 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       home: Scaffold(
+        appBar: AppBar(elevation: 0, title: const Text('Example App')),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ShowUserInformationWidget(),
-              const SizedBox(height: 16),
-              TextButton(
-                child: const Text('FETCH DATA'),
-                onPressed: BlocManager.instance
-                    .fetch<ShowUserInformationCubit>()
-                    .fetchUserInformation,
-              )
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 128),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ShowUserInformationWidget(),
+                const Spacer(),
+                TextButton(
+                  child: const Text('FETCH DATA'),
+                  onPressed: BlocManager.instance
+                      .fetch<ShowUserInformationCubit>()
+                      .fetchUserInformation,
+                )
+              ],
+            ),
           ),
         ),
       ),

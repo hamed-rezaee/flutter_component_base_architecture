@@ -12,8 +12,8 @@ String getFilePath({
 
 /// Gets component imports structure.
 String getImportsStructure(String name) => '''
-    export 'data/${name.toSnakeCase}_model.dart';
     export 'data/repositories/${name.toSnakeCase}_repository.dart';
+    export 'data/${name.toSnakeCase}_model.dart';
     export 'domain/base_${name.toSnakeCase}_repository.dart';
     export 'domain/${name.toSnakeCase}_entity.dart';
     export 'domain/${name.toSnakeCase}_service.dart';
@@ -49,6 +49,8 @@ String getModelStructure({
 /// Gets base repository structure.
 String getBaseRepositoryStructure(String name) => '''
     import 'package:flutter_app_architecture/components.dart';
+
+    import '../show_user_information_component.dart';
 
     /// Base ${name.toSentenceLowerCase} repository.
     abstract class Base${name}Repository extends BaseRepository {}
@@ -116,7 +118,9 @@ String getCubitStructure({required String name, required String postfix}) => '''
         ${name}Cubit({${name}Service? service})
           : super(
               service: service,
-              initialState: BaseState<${name}Entity>(status: BaseStateStatus.initial),
+              initialState: BaseState<${name}Entity>(
+                status: BaseStateStatus.initial,
+              ),
             );
       }
     ''';

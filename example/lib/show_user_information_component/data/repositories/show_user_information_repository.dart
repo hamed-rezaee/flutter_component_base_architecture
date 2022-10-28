@@ -1,5 +1,6 @@
 import '../../show_user_information_component.dart';
 
+/// Show user information repository.
 class ShowUserInformationRepository extends BaseShowUserInformationRepository {
   @override
   Future<ShowUserInformationEntity> fetchUserInformation() async {
@@ -7,6 +8,6 @@ class ShowUserInformationRepository extends BaseShowUserInformationRepository {
 
     return ShowUserInformationModel.fromJson(
       <String, dynamic>{'name': 'John Doe', 'birthdate': '1985-11-11'},
-    ).getEntity();
+    ).toEntity();
   }
 }

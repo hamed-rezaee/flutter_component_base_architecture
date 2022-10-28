@@ -4,7 +4,9 @@ import 'package:flutter_app_architecture/components.dart';
 
 import '../show_user_information_component.dart';
 
+/// Show user information cubit.
 class ShowUserInformationCubit extends BaseCubit<ShowUserInformationEntity> {
+  /// Initializes [ShowUserInformationCubit].
   ShowUserInformationCubit({ShowUserInformationService? service})
       : super(
           service: service,
@@ -25,7 +27,7 @@ class ShowUserInformationCubit extends BaseCubit<ShowUserInformationEntity> {
       emit(
         BaseState<ShowUserInformationEntity>(
           status: BaseStateStatus.failure,
-          error: 'RANDOM FAILURE!!!',
+          error: 'RANDOM ERROR :(',
         ),
       );
     } else {
