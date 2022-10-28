@@ -22,6 +22,8 @@ dependencies:
       path: packages/deriv_bloc_manager
       ref: dev
 
+  equatable: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

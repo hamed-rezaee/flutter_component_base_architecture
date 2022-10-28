@@ -72,16 +72,21 @@ String getEntityStructure({
   required List<ModelStructure> modelStructures,
 }) =>
     '''
+      import 'package:equatable/equatable.dart';
+
       import 'package:flutter_app_architecture/components.dart';
 
       /// ${name.toSentenceCase} entity.
-      class ${name}Entity extends BaseEntity {
+      class ${name}Entity extends BaseEntity with EquatableMixin {
         ${_generateConstructor(name: name, modelStructures: modelStructures, isModel: false)}
 
         ${_generateFields(modelStructures)}
 
         @override
-        String toString() => throw UnimplementedError();  
+        List<Object?> get props => <Object?>[${getToString(modelStructures)}];
+
+        @override
+        bool get stringify => true; 
       }
     ''';
 
@@ -109,10 +114,10 @@ String getCubitStructure({required String name, required String postfix}) => '''
       class ${name}Cubit extends BaseCubit<${name}Entity> {
         /// Initializes [${name}Cubit].
         ${name}Cubit({${name}Service? service})
-            : super(
-                service: service,
-                initialState: BaseState<${name}Entity>(status: BaseStateStatus.initial),
-              );
+          : super(
+              service: service,
+              initialState: BaseState<${name}Entity>(status: BaseStateStatus.initial),
+            );
       }
     ''';
 
@@ -129,17 +134,14 @@ String getWidgetStructure({required String name, required String postfix}) =>
       class ${name}Widget extends StatelessWidget {
         @override
         Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Cubit>(
-              loadingWidgetBuilder:
-                  (BuildContext context, BaseState<BaseEntity> state) =>
-                      throw UnimplementedError(),
-              successWidgetBuilder:
-                  (BuildContext context, BaseState<BaseEntity> state) =>
-                      throw UnimplementedError(),
-              errorWidgetBuilder:
-                  (BuildContext context, BaseState<BaseEntity> state) =>
-                      throw UnimplementedError(),
-            );
-        }
+          loadingWidgetBuilder:
+            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+          successWidgetBuilder:
+            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+          errorWidgetBuilder:
+            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+        );
+      }
       ''';
 
 String _generateConstructor({
@@ -147,7 +149,7 @@ String _generateConstructor({
   required List<ModelStructure> modelStructures,
   bool isModel = true,
 }) {
-  modelStructures.sortModelStructures();
+  modelStructures.sortModelStructures(checkIsRequired: true);
 
   final StringBuffer body = StringBuffer();
 
@@ -165,7 +167,7 @@ String _generateFromJson({
   required String name,
   required List<ModelStructure> modelStructures,
 }) {
-  modelStructures.sortModelStructures();
+  modelStructures.sortModelStructures(checkIsRequired: true);
 
   final StringBuffer body = StringBuffer();
 
@@ -175,8 +177,7 @@ String _generateFromJson({
 
   return '''
     /// Creates an instance from JSON.
-    factory ${name}Model.fromJson(Map<String, dynamic> json) =>
-      ${name}Model($body);
+    factory ${name}Model.fromJson(Map<String, dynamic> json) => ${name}Model($body);
   ''';
 }
 
@@ -184,7 +185,7 @@ String _generateFromEntity({
   required String name,
   required List<ModelStructure> modelStructures,
 }) {
-  modelStructures.sortModelStructures();
+  modelStructures.sortModelStructures(checkIsRequired: true);
 
   final StringBuffer body = StringBuffer();
 
@@ -194,8 +195,7 @@ String _generateFromEntity({
 
   return '''
     /// Creates an instance from [${name}Entity].
-    factory ${name}Model.fromEntity(${name}Entity entity) =>
-      ${name}Model($body);
+    factory ${name}Model.fromEntity(${name}Entity entity) => ${name}Model($body);
   ''';
 }
 
@@ -203,7 +203,7 @@ String _generateToJson({
   required String name,
   required List<ModelStructure> modelStructures,
 }) {
-  modelStructures.sortModelStructures();
+  modelStructures.sortModelStructures(checkIsRequired: true);
 
   final StringBuffer body = StringBuffer();
 
@@ -227,7 +227,7 @@ String _generateToEntity({
   required String name,
   required List<ModelStructure> modelStructures,
 }) {
-  modelStructures.sortModelStructures();
+  modelStructures.sortModelStructures(checkIsRequired: true);
 
   final StringBuffer body = StringBuffer();
 
@@ -237,13 +237,12 @@ String _generateToEntity({
 
   return '''
     /// Converts an instance to [${name}Entity].
-    ${name}Entity toEntity() =>
-      ${name}Entity($body);
+    ${name}Entity toEntity() => ${name}Entity($body);
   ''';
 }
 
 String _generateFields(List<ModelStructure> modelStructures) {
-  modelStructures.sortModelStructures();
+  modelStructures.sortModelStructures(checkIsRequired: true);
 
   final StringBuffer body = StringBuffer();
 
@@ -254,4 +253,17 @@ String _generateFields(List<ModelStructure> modelStructures) {
   }
 
   return '$body';
+}
+
+/// Gets entity structure.
+String getToString(List<ModelStructure> modelStructures) {
+  modelStructures.sortModelStructures();
+
+  return modelStructures
+      .map<String>((ModelStructure element) => element.name)
+      .fold(
+        '',
+        (String previousValue, String element) =>
+            '$previousValue${previousValue == '' ? '' : ', '}$element',
+      );
 }
