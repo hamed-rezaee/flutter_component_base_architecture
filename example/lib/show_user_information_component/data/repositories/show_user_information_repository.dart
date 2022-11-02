@@ -1,5 +1,3 @@
-import 'package:flutter_app_architecture/structure/data/base_mapper.dart';
-
 import '../../show_user_information_component.dart';
 
 /// Show user information repository.
@@ -8,7 +6,7 @@ class ShowUserInformationRepository
   ShowUserInformationRepository(this.mapper);
 
   @override
-  final BaseMapper<ShowUserInformationEntity, ShowUserInformationModel> mapper;
+  final ShowUserInformationMapper mapper;
 
   @override
   Future<ShowUserInformationEntity> fetchUserInformation() async {

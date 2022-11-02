@@ -10,9 +10,8 @@ class ShowUserInformationService
   ShowUserInformationService(this.repository);
 
   @override
-  final BaseRepository<ShowUserInformationEntity, ShowUserInformationModel>
-      repository;
+  final BaseShowUserInformationRepository repository;
 
   Future<ShowUserInformationEntity> fetchUserInformation() async =>
-      (repository as BaseShowUserInformationRepository).fetchUserInformation();
+      repository.fetchUserInformation();
 }

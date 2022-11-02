@@ -9,7 +9,7 @@ abstract class BaseShowUserInformationRepository
   BaseShowUserInformationRepository(this.mapper);
 
   @override
-  final BaseMapper<ShowUserInformationEntity, ShowUserInformationModel> mapper;
+  final ShowUserInformationMapper mapper;
 
   Future<ShowUserInformationEntity> fetchUserInformation();
 }
