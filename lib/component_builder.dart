@@ -13,6 +13,7 @@ String getFilePath({
 /// Gets component imports structure.
 String getImportsStructure(String name) => '''
     export 'data/repositories/${name.toSnakeCase}_repository.dart';
+    export 'data/${name.toSnakeCase}_mapper.dart';
     export 'data/${name.toSnakeCase}_model.dart';
     export 'domain/base_${name.toSnakeCase}_repository.dart';
     export 'domain/${name.toSnakeCase}_entity.dart';
@@ -23,37 +24,41 @@ String getImportsStructure(String name) => '''
 
 /// Gets model structure.
 String getModelStructure({
-  required String path,
   required String name,
   required List<ModelStructure> modelStructures,
 }) =>
     '''
-      import '../${name.toSnakeCase}_component.dart';
+      import 'package:flutter_app_architecture/structure/data/base_model.dart';
 
       /// ${name.toSentenceCase} model.
-      class ${name}Model {
+      class ${name}Model implements BaseModel {
         ${_generateConstructor(name: name, modelStructures: modelStructures)}
 
         ${_generateFromJson(name: name, modelStructures: modelStructures)}
 
-        ${_generateFromEntity(name: name, modelStructures: modelStructures)}
-
         ${_generateFields(modelStructures)}
 
         ${_generateToJson(name: name, modelStructures: modelStructures)}
-        
-        ${_generateToEntity(name: name, modelStructures: modelStructures)}
       }
     ''';
 
 /// Gets base repository structure.
-String getBaseRepositoryStructure(String name) => '''
-    import 'package:flutter_app_architecture/components.dart';
+String getBaseRepositoryStructure({
+  required String name,
+  required String postfix,
+}) =>
+    '''
+      import 'package:flutter_app_architecture/components.dart';
 
-    import '../show_user_information_component.dart';
+      import '../${name.toSnakeCase}_$postfix.dart';
 
-    /// Base ${name.toSentenceLowerCase} repository.
-    abstract class Base${name}Repository extends BaseRepository {}
+      /// Base ${name.toSentenceLowerCase} repository.
+      abstract class Base${name}Repository implements BaseRepository<${name}Entity, ${name}Model> {
+        Base${name}Repository(this.mapper);
+
+        @override
+        final BaseMapper<${name}Entity, ${name}Model> mapper;
+      }
   ''';
 
 /// Gets repository structure.
@@ -62,10 +67,36 @@ String getRepositoryStructure({
   required String postfix,
 }) =>
     '''
+      import 'package:flutter_app_architecture/structure/data/base_mapper.dart';
+
       import '../../${name.toSnakeCase}_$postfix.dart';
 
       /// ${name.toSentenceCase} repository.
-      class ${name}Repository extends Base${name}Repository {}
+      class ${name}Repository implements Base${name}Repository {
+        ${name}Repository(this.mapper);
+
+        @override
+        final BaseMapper<${name}Entity, ${name}Model> mapper;
+      }
+    ''';
+
+/// Gets mapper structure.
+String getMapperStructure({
+  required String name,
+  required String postfix,
+}) =>
+    '''
+      import 'package:flutter_app_architecture/structure/data/base_mapper.dart';
+
+      import '../${name.toSnakeCase}_$postfix.dart';
+
+      class ${name}Mapper implements BaseMapper<${name}Entity, ${name}Model> {
+        @override
+        ${name}Model fromEntity(${name}Entity entity) => throw UnimplementedError();
+
+        @override
+        ${name}Entity toEntity(${name}Model model) => throw UnimplementedError();
+      }
     ''';
 
 /// Gets entity structure.
@@ -79,7 +110,7 @@ String getEntityStructure({
       import 'package:flutter_app_architecture/components.dart';
 
       /// ${name.toSentenceCase} entity.
-      class ${name}Entity extends BaseEntity with EquatableMixin {
+      class ${name}Entity with EquatableMixin implements BaseEntity {
         ${_generateConstructor(name: name, modelStructures: modelStructures, isModel: false)}
 
         ${_generateFields(modelStructures)}
@@ -100,9 +131,12 @@ String getServiceStructure({required String name, required String postfix}) =>
       import '../${name.toSnakeCase}_$postfix.dart';
 
       /// ${name.toSentenceCase} service.
-      class ${name}Service extends BaseService<${name}Entity> {
+      class ${name}Service implements BaseService<${name}Entity, ${name}Model> {
         /// Initializes [${name}Service].
-        ${name}Service(Base${name}Repository repository) : super(repository);
+        ${name}Service(this.repository);
+
+        @override
+        final BaseRepository<${name}Entity, ${name}Model> repository;
       }
     ''';
 
@@ -113,15 +147,12 @@ String getCubitStructure({required String name, required String postfix}) => '''
       import '../${name.toSnakeCase}_$postfix.dart';
       
       /// ${name.toSentenceCase} cubit.
-      class ${name}Cubit extends BaseCubit<${name}Entity> {
+      class ${name}Cubit extends BaseCubit<${name}Entity, ${name}Model> {
         /// Initializes [${name}Cubit].
-        ${name}Cubit({${name}Service? service})
-          : super(
-              service: service,
-              initialState: BaseState<${name}Entity>(
-                status: BaseStateStatus.initial,
-              ),
-            );
+        ${name}Cubit({
+          required BaseState<${name}Entity> initialState,
+          ${name}Service? service,
+        }) : super(service: service, initialState: initialState);
       }
     ''';
 
@@ -137,7 +168,9 @@ String getWidgetStructure({required String name, required String postfix}) =>
       /// ${name.toSentenceCase} widget.
       class ${name}Widget extends StatelessWidget {
         @override
-        Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Cubit>(
+        Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Model, ${name}Cubit>(
+          initialWidgetBuilder:
+            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
           loadingWidgetBuilder:
             (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
           successWidgetBuilder:
@@ -185,24 +218,6 @@ String _generateFromJson({
   ''';
 }
 
-String _generateFromEntity({
-  required String name,
-  required List<ModelStructure> modelStructures,
-}) {
-  modelStructures.sortModelStructures(checkIsRequired: true);
-
-  final StringBuffer body = StringBuffer();
-
-  for (final ModelStructure modelStructure in modelStructures) {
-    body.write(modelStructure.getFromEntityDefinition);
-  }
-
-  return '''
-    /// Creates an instance from [${name}Entity].
-    factory ${name}Model.fromEntity(${name}Entity entity) => ${name}Model($body);
-  ''';
-}
-
 String _generateToJson({
   required String name,
   required List<ModelStructure> modelStructures,
@@ -224,24 +239,6 @@ String _generateToJson({
 
       return json;
     }
-  ''';
-}
-
-String _generateToEntity({
-  required String name,
-  required List<ModelStructure> modelStructures,
-}) {
-  modelStructures.sortModelStructures(checkIsRequired: true);
-
-  final StringBuffer body = StringBuffer();
-
-  for (final ModelStructure modelStructure in modelStructures) {
-    body.write(modelStructure.getToEntityDefinition);
-  }
-
-  return '''
-    /// Converts an instance to [${name}Entity].
-    ${name}Entity toEntity() => ${name}Entity($body);
   ''';
 }
 

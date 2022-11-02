@@ -5,15 +5,13 @@ import 'package:flutter_app_architecture/components.dart';
 import '../show_user_information_component.dart';
 
 /// Show user information cubit.
-class ShowUserInformationCubit extends BaseCubit<ShowUserInformationEntity> {
+class ShowUserInformationCubit
+    extends BaseCubit<ShowUserInformationEntity, ShowUserInformationModel> {
   /// Initializes [ShowUserInformationCubit].
-  ShowUserInformationCubit({ShowUserInformationService? service})
-      : super(
-          service: service,
-          initialState: BaseState<ShowUserInformationEntity>(
-            status: BaseStateStatus.initial,
-          ),
-        );
+  ShowUserInformationCubit({
+    required BaseState<ShowUserInformationEntity> initialState,
+    ShowUserInformationService? service,
+  }) : super(service: service, initialState: initialState);
 
   Future<void> fetchUserInformation() async {
     emit(BaseState<ShowUserInformationEntity>(status: BaseStateStatus.loading));

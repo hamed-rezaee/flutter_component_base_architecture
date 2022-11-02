@@ -32,6 +32,7 @@ void _generateComponent() {
       '${ask(green('# Enter component path'), defaultValue: './lib')}/${componentName.toSnakeCase}_$postfix';
 
   final String dataPath = '$path/data';
+  final String mapperPath = '$path/data';
   final String repositoriesPath = '$dataPath/repositories';
   final String domainPath = '$path/domain';
   final String presentationPath = '$path/presentation';
@@ -48,6 +49,7 @@ void _generateComponent() {
     _generateComponents(
       path: path,
       dataPath: dataPath,
+      mapperPath: mapperPath,
       componentName: componentName,
       repositoriesPath: repositoriesPath,
       domainPath: domainPath,
@@ -133,6 +135,7 @@ void _createDirectories({
 void _generateComponents({
   required String path,
   required String dataPath,
+  required String mapperPath,
   required String componentName,
   required String repositoriesPath,
   required String domainPath,
@@ -142,10 +145,16 @@ void _generateComponents({
 }) {
   _generateImports(path: path, name: componentName, postfix: postfix);
 
+  // Data layer.
   _generateModel(
     path: dataPath,
     name: componentName,
     modelStructures: modelStructures,
+  );
+  _generateMapper(
+    path: mapperPath,
+    name: componentName,
+    postfix: postfix,
   );
   _generateRepository(
     path: repositoriesPath,
@@ -153,6 +162,7 @@ void _generateComponents({
     postfix: postfix,
   );
 
+  // Domain layer.
   _generateEntity(
     path: domainPath,
     name: componentName,
@@ -160,8 +170,13 @@ void _generateComponents({
     postfix: postfix,
   );
   _generateService(path: domainPath, name: componentName, postfix: postfix);
-  _generateBaseRepository(path: domainPath, name: componentName);
+  _generateBaseRepository(
+    path: domainPath,
+    name: componentName,
+    postfix: postfix,
+  );
 
+  // presentation layer.
   _generateCubit(path: presentationPath, name: componentName, postfix: postfix);
   _generateWidget(
     path: presentationPath,
@@ -185,15 +200,34 @@ void _generateModel({
 }) =>
     getFilePath(path: path, name: name, type: 'model').write(
       getModelStructure(
-        path: path,
         name: name,
         modelStructures: modelStructures,
       ).dartFormat,
     );
 
-void _generateBaseRepository({required String path, required String name}) =>
-    getFilePath(path: path, name: name, type: 'repository', isBase: true)
-        .write(getBaseRepositoryStructure(name).dartFormat);
+void _generateMapper({
+  required String path,
+  required String name,
+  required String postfix,
+}) =>
+    getFilePath(path: path, name: name, type: 'mapper').write(
+      getMapperStructure(
+        name: name,
+        postfix: postfix,
+      ).dartFormat,
+    );
+
+void _generateBaseRepository({
+  required String path,
+  required String name,
+  required String postfix,
+}) =>
+    getFilePath(path: path, name: name, type: 'repository', isBase: true).write(
+      getBaseRepositoryStructure(
+        name: name,
+        postfix: postfix,
+      ).dartFormat,
+    );
 
 void _generateRepository({
   required String path,

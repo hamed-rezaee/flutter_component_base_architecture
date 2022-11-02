@@ -1,4 +1,5 @@
 export 'data/repositories/show_user_information_repository.dart';
+export 'data/show_user_information_mapper.dart';
 export 'data/show_user_information_model.dart';
 export 'domain/base_show_user_information_repository.dart';
 export 'domain/show_user_information_entity.dart';

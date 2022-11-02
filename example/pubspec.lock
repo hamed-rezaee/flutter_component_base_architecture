@@ -74,7 +74,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "9a326c67969668e72f324e70bb929d9afa6e7a76"
+      resolved-ref: "0d179e392ce633376ad7b8090d9c6b0ac91005cb"
       url: "git@github.com:hamed-deriv/flutter_app_architecture.git"
     source: git
     version: "1.0.0+1"
@@ -90,7 +90,7 @@ packages:
     description:
       path: "packages/deriv_bloc_manager"
       ref: dev
-      resolved-ref: "4c29d91d0b8096347603e3ccc8303cada10c8822"
+      resolved-ref: "37b8c279a640489e08843e59490454120a5a20bd"
       url: "git@github.com:regentmarkets/flutter-deriv-packages.git"
     source: git
     version: "0.0.1"
@@ -154,7 +154,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.3"
+    version: "6.0.4"
   sky_engine:
     dependency: transitive
     description: flutter

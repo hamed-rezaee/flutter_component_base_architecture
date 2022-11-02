@@ -7,8 +7,11 @@ import '../show_user_information_component.dart';
 /// Show user information widget.
 class ShowUserInformationWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) =>
-      BaseWidget<ShowUserInformationEntity, ShowUserInformationCubit>(
+  Widget build(BuildContext context) => BaseWidget<ShowUserInformationEntity,
+          ShowUserInformationModel, ShowUserInformationCubit>(
+        initialWidgetBuilder:
+            (BuildContext context, BaseState<BaseEntity> state) =>
+                const SizedBox.shrink(),
         loadingWidgetBuilder:
             (BuildContext context, BaseState<BaseEntity> state) =>
                 const CircularProgressIndicator(),

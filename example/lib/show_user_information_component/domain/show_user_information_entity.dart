@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_app_architecture/components.dart';
 
 /// Show user information entity.
-class ShowUserInformationEntity extends BaseEntity with EquatableMixin {
+class ShowUserInformationEntity with EquatableMixin implements BaseEntity {
   /// Initializes [ShowUserInformationEntity].
   ShowUserInformationEntity({
     required this.name,

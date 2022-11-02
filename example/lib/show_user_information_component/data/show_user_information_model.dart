@@ -1,7 +1,7 @@
-import '../show_user_information_component.dart';
+import 'package:flutter_app_architecture/structure/data/base_model.dart';
 
 /// Show user information model.
-class ShowUserInformationModel {
+class ShowUserInformationModel implements BaseModel {
   /// Initializes [ShowUserInformationModel].
   ShowUserInformationModel({
     required this.name,
@@ -13,14 +13,6 @@ class ShowUserInformationModel {
       ShowUserInformationModel(
         name: json['name'],
         birthdate: json['birthdate'],
-      );
-
-  /// Creates an instance from [ShowUserInformationEntity].
-  factory ShowUserInformationModel.fromEntity(
-          ShowUserInformationEntity entity) =>
-      ShowUserInformationModel(
-        name: entity.name,
-        birthdate: entity.birthdate?.toString(),
       );
 
   /// Name.
@@ -38,10 +30,4 @@ class ShowUserInformationModel {
 
     return json;
   }
-
-  /// Converts an instance to [ShowUserInformationEntity].
-  ShowUserInformationEntity toEntity() => ShowUserInformationEntity(
-        name: name,
-        birthdate: birthdate == null ? null : DateTime.parse(birthdate!),
-      );
 }
