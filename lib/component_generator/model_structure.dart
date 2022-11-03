@@ -1,4 +1,4 @@
-import 'package:dart_app_architecture_cli/extensions.dart';
+import 'extensions.dart';
 
 /// Model structure class.
 class ModelStructure {
@@ -32,12 +32,6 @@ class ModelStructure {
   /// Gets from json definition.
   String get getFromJsonDefinition => '$name: json[\'${name.toSnakeCase}\'],';
 
-  /// Gets from entity definition.
-  String get getFromEntityDefinition => '$name: entity.$name,';
-
   /// Gets to json definition.
   String get getToJsonDefinition => 'json[\'${name.toSnakeCase}\'] = $name;';
-
-  /// Gets to entity definition.
-  String get getToEntityDefinition => '$name: $name,';
 }

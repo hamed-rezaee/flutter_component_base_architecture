@@ -3,11 +3,10 @@
 
 import 'package:dcli/dcli.dart';
 
-import 'package:dart_app_architecture_cli/component_builder.dart';
-import 'package:dart_app_architecture_cli/dart_types.dart';
-import 'package:dart_app_architecture_cli/model_structure.dart';
-
 import 'extensions.dart';
+import 'generator.dart';
+import 'model_structure.dart';
+import 'types.dart';
 
 void main(List<String> args) => _generateComponent();
 

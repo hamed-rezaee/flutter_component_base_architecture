@@ -1,5 +1,5 @@
-import 'package:dart_app_architecture_cli/extensions.dart';
-import 'package:dart_app_architecture_cli/model_structure.dart';
+import 'extensions.dart';
+import 'model_structure.dart';
 
 /// Gets file path.
 String getFilePath({
@@ -28,7 +28,7 @@ String getModelStructure({
   required List<ModelStructure> modelStructures,
 }) =>
     '''
-      import 'package:flutter_app_architecture/structure/data/base_model.dart';
+      import 'package:flutter_app_architecture/components.dart';
 
       /// ${name.toSentenceCase} model.
       class ${name}Model implements BaseModel {
@@ -54,6 +54,7 @@ String getBaseRepositoryStructure({
 
       /// Base ${name.toSentenceLowerCase} repository.
       abstract class Base${name}Repository implements BaseRepository<${name}Entity, ${name}Model> {
+        /// Initializes [Base${name}Repository].
         Base${name}Repository(this.mapper);
 
         @override
@@ -67,16 +68,15 @@ String getRepositoryStructure({
   required String postfix,
 }) =>
     '''
-      import 'package:flutter_app_architecture/structure/data/base_mapper.dart';
-
       import '../../${name.toSnakeCase}_$postfix.dart';
 
       /// ${name.toSentenceCase} repository.
       class ${name}Repository implements Base${name}Repository {
+        /// Initializes [${name}Repository].
         ${name}Repository(this.mapper);
 
         @override
-        final BaseMapper<${name}Entity, ${name}Model> mapper;
+        final ${name}Mapper mapper;
       }
     ''';
 
@@ -86,10 +86,11 @@ String getMapperStructure({
   required String postfix,
 }) =>
     '''
-      import 'package:flutter_app_architecture/structure/data/base_mapper.dart';
+      import 'package:flutter_app_architecture/components.dart';
 
       import '../${name.toSnakeCase}_$postfix.dart';
 
+      /// ${name.toSentenceCase} mapper.
       class ${name}Mapper implements BaseMapper<${name}Entity, ${name}Model> {
         @override
         ${name}Model fromEntity(${name}Entity entity) => throw UnimplementedError();

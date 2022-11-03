@@ -13,14 +13,7 @@ dependencies:
     sdk: flutter
 
   flutter_app_architecture:
-    git:
-      url: git@github.com:hamed-deriv/flutter_app_architecture.git
-
-  flutter_deriv_bloc_manager:
-    git:
-      url: git@github.com:regentmarkets/flutter-deriv-packages.git
-      path: packages/deriv_bloc_manager
-      ref: dev
+    path: ../
 
   equatable: ^2.0.5
 

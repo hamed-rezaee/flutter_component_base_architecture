@@ -1,4 +1,4 @@
-import 'package:flutter_app_architecture/structure/data/base_mapper.dart';
+import 'package:flutter_app_architecture/components.dart';
 
 import '../show_user_information_component.dart';
 

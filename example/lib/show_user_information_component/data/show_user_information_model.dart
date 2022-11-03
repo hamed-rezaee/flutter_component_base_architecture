@@ -1,4 +1,4 @@
-import 'package:flutter_app_architecture/structure/data/base_model.dart';
+import 'package:flutter_app_architecture/components.dart';
 
 /// Show user information model.
 class ShowUserInformationModel implements BaseModel {

@@ -1,7 +1,7 @@
 import 'package:dart_style/dart_style.dart';
 import 'package:recase/recase.dart';
 
-import 'package:dart_app_architecture_cli/model_structure.dart';
+import 'model_structure.dart';
 
 /// [String] extensions.
 extension StringExtension on String {

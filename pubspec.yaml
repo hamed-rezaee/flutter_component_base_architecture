@@ -1,5 +1,5 @@
-name: dart_app_architecture_cli
-description: Deriv App Architecture CLI
+name: flutter_app_architecture
+description: Deriv App Architecture
 
 publish_to: none
 
@@ -9,9 +9,19 @@ environment:
   sdk: ">=2.16.2 <3.0.0"
 
 dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_deriv_bloc_manager:
+    git:
+      url: git@github.com:regentmarkets/flutter-deriv-packages.git
+      path: packages/deriv_bloc_manager
+      ref: dev
+
   dart_style: ^2.2.4
   dcli: ^1.34.0
   path: ^1.8.0
+  flutter_bloc: ^7.2.0
   recase: ^4.1.0
 
 dev_dependencies:
