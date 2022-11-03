@@ -43,19 +43,16 @@ class BaseWidget<Entity extends BaseEntity, Model extends BaseModel,
   Widget build(BuildContext context) => BlocBuilder<Cubit, BaseState<Entity>>(
         bloc: BlocManager.instance.fetch<Cubit>(cubitKey),
         builder: (BuildContext context, BaseState<Entity> state) {
-          if (state.status == BaseStateStatus.initial) {
-            return initialWidgetBuilder(context, state);
+          switch (state.status) {
+            case BaseStateStatus.initial:
+              return initialWidgetBuilder(context, state);
+            case BaseStateStatus.loading:
+              return loadingWidgetBuilder(context, state);
+            case BaseStateStatus.success:
+              return loadingWidgetBuilder(context, state);
+            case BaseStateStatus.failure:
+              return errorWidgetBuilder(context, state);
           }
-
-          if (state.status == BaseStateStatus.loading) {
-            return loadingWidgetBuilder(context, state);
-          }
-
-          if (state.status == BaseStateStatus.success) {
-            return successWidgetBuilder(context, state);
-          }
-
-          return errorWidgetBuilder(context, state);
         },
       );
 }
