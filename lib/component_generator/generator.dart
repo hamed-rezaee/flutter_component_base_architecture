@@ -58,7 +58,7 @@ String getBaseRepositoryStructure({
         Base${name}Repository(this.mapper);
 
         @override
-        final BaseMapper<${name}Entity, ${name}Model> mapper;
+        final ${name}Mapper mapper;
       }
   ''';
 
@@ -137,7 +137,7 @@ String getServiceStructure({required String name, required String postfix}) =>
         ${name}Service(this.repository);
 
         @override
-        final BaseRepository<${name}Entity, ${name}Model> repository;
+        final Base${name}Repository repository;
       }
     ''';
 

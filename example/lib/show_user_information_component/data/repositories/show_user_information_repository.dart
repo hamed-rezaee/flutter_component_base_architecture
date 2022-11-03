@@ -3,6 +3,7 @@ import '../../show_user_information_component.dart';
 /// Show user information repository.
 class ShowUserInformationRepository
     implements BaseShowUserInformationRepository {
+  /// Initializes [ShowUserInformationRepository].
   ShowUserInformationRepository(this.mapper);
 
   @override

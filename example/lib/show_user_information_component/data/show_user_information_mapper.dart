@@ -2,6 +2,7 @@ import 'package:flutter_app_architecture/components.dart';
 
 import '../show_user_information_component.dart';
 
+/// Show user information mapper.
 class ShowUserInformationMapper
     implements BaseMapper<ShowUserInformationEntity, ShowUserInformationModel> {
   @override
