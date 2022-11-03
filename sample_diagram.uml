@@ -1,0 +1,142 @@
+@startuml
+set namespaceSeparator ::
+
+class "sample_unit_component::data::repositories::sample_unit_repository.dart::SampleUnitRepository" {
+  +SampleUnitMapper mapper
+  +Future<SampleUnitEntity> fetch()
+}
+
+"sample_unit_component::data::repositories::sample_unit_repository.dart::SampleUnitRepository" o-- "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper"
+"sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository" <|-- "sample_unit_component::data::repositories::sample_unit_repository.dart::SampleUnitRepository"
+
+class "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper" {
+  +SampleUnitModel fromEntity()
+  +SampleUnitEntity toEntity()
+}
+
+"architecture::data::base_mapper.dart::BaseMapper" <|-- "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper"
+
+class "sample_unit_component::data::sample_unit_model.dart::SampleUnitModel" {
+  +int firstField
+  +bool? thirdField
+  +String? secondField
+  +Map<String, dynamic> toJson()
+}
+
+"architecture::data::base_model.dart::BaseModel" <|-- "sample_unit_component::data::sample_unit_model.dart::SampleUnitModel"
+
+class "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity" {
+  +int firstField
+  +bool? thirdField
+  +String? secondField
+  +List<Object?> props
+  +bool stringify
+}
+
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity"
+"architecture::domain::base_entity.dart::BaseEntity" <|-- "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity"
+
+abstract class "sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository" {
+  +SampleUnitMapper mapper
+  +Future<SampleUnitEntity> fetch()
+}
+
+"sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository" o-- "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper"
+"architecture::domain::base_repository.dart::BaseRepository" <|-- "sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository"
+
+class "sample_unit_component::domain::sample_unit_service.dart::SampleUnitService" {
+  +BaseSampleUnitRepository repository
+  +Future<SampleUnitEntity> fetch()
+}
+
+"sample_unit_component::domain::sample_unit_service.dart::SampleUnitService" o-- "sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository"
+"architecture::domain::base_service.dart::BaseService" <|-- "sample_unit_component::domain::sample_unit_service.dart::SampleUnitService"
+
+class "sample_unit_component::presentation::sample_unit_cubit.dart::SampleUnitCubit" {
+}
+
+"architecture::presentation::state_manager::base_cubit.dart::BaseCubit" <|-- "sample_unit_component::presentation::sample_unit_cubit.dart::SampleUnitCubit"
+
+class "sample_unit_component::presentation::sample_unit_widget.dart::SampleUnitWidget" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sample_unit_component::presentation::sample_unit_widget.dart::SampleUnitWidget"
+
+class "component_generator::model_structure.dart::ModelStructure" {
+  +String name
+  +Type type
+  +bool isNullable
+  +bool isRequired
+  +String getConstructorDefinition
+  +String getFieldDefinition
+  +String getFromJsonDefinition
+  +String getToJsonDefinition
+}
+
+abstract class "architecture::data::base_mapper.dart::BaseMapper" {
+  +Model fromEntity()
+  +Entity toEntity()
+}
+
+class "architecture::data::base_model.dart::BaseModel" {
+}
+
+abstract class "architecture::domain::base_repository.dart::BaseRepository" {
+  +BaseMapper<Entity, Model> mapper
+}
+
+"architecture::domain::base_repository.dart::BaseRepository" o-- "architecture::data::base_mapper.dart::BaseMapper<Entity, Model>"
+
+abstract class "architecture::domain::base_service.dart::BaseService" {
+  +BaseRepository<Entity, Model> repository
+}
+
+"architecture::domain::base_service.dart::BaseService" o-- "architecture::domain::base_repository.dart::BaseRepository<Entity, Model>"
+
+abstract class "architecture::domain::base_entity.dart::BaseEntity" {
+}
+
+class "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus" {
+  +int index
+  {static} +List<BaseStateStatus> values
+  {static} +BaseStateStatus initial
+  {static} +BaseStateStatus loading
+  {static} +BaseStateStatus success
+  {static} +BaseStateStatus failure
+}
+
+"architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus" o-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
+"dart::core::Enum" <|-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
+
+class "architecture::presentation::state_manager::base_state.dart::BaseState" {
+  +BaseStateStatus status
+  +Entity? data
+  +String? error
+  +List<Object?> props
+  +String toString()
+}
+
+"architecture::presentation::state_manager::base_state.dart::BaseState" o-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "architecture::presentation::state_manager::base_state.dart::BaseState"
+
+abstract class "architecture::presentation::state_manager::base_cubit.dart::BaseCubit" {
+  +BaseService<Entity, Model>? service
+}
+
+"architecture::presentation::state_manager::base_cubit.dart::BaseCubit" o-- "architecture::domain::base_service.dart::BaseService<Entity, Model>"
+"bloc::src::bloc.dart::Cubit" <|-- "architecture::presentation::state_manager::base_cubit.dart::BaseCubit"
+
+class "architecture::presentation::base_widget.dart::BaseWidget" {
+  +String cubitKey
+  +Widget Function(BuildContext, BaseState<BaseEntity>) initialWidgetBuilder
+  +Widget Function(BuildContext, BaseState<BaseEntity>) loadingWidgetBuilder
+  +Widget Function(BuildContext, BaseState<BaseEntity>) successWidgetBuilder
+  +Widget Function(BuildContext, BaseState<BaseEntity>) errorWidgetBuilder
+  +Widget build()
+}
+
+"architecture::presentation::base_widget.dart::BaseWidget" o-- "architecture::presentation::base_widget.dart::Widget Function(BuildContext, BaseState<BaseEntity>)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "architecture::presentation::base_widget.dart::BaseWidget"
+
+@enduml

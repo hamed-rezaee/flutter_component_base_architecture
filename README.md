@@ -1,8 +1,14 @@
 # Component Generator
 
-## Component Architecture
+## Architecture
 
-![Component Architecture](/component_architecture.png)
+#### Architecture Diagram
+
+![Architecture Diagram](/architecture_diagram.png)
+
+#### Sample Diagram
+
+![Sample Diagram](/sample_diagram.png)
 
 ## Getting Started
 
