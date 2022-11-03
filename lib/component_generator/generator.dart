@@ -39,6 +39,8 @@ String getModelStructure({
         ${_generateFields(modelStructures)}
 
         ${_generateToJson(name: name, modelStructures: modelStructures)}
+
+        ${_getEquatableMixinMethods(modelStructures)}
       }
     ''';
 
@@ -106,21 +108,15 @@ String getEntityStructure({
   required List<ModelStructure> modelStructures,
 }) =>
     '''
-      import 'package:equatable/equatable.dart';
-
       import 'package:flutter_app_architecture/components.dart';
 
       /// ${name.toSentenceCase} entity.
-      class ${name}Entity with EquatableMixin implements BaseEntity {
+      class ${name}Entity implements BaseEntity {
         ${_generateConstructor(name: name, modelStructures: modelStructures, isModel: false)}
 
         ${_generateFields(modelStructures)}
 
-        @override
-        List<Object?> get props => <Object?>[${getToString(modelStructures)}];
-
-        @override
-        bool get stringify => true; 
+        ${_getEquatableMixinMethods(modelStructures)}
       }
     ''';
 
@@ -257,8 +253,7 @@ String _generateFields(List<ModelStructure> modelStructures) {
   return '$body';
 }
 
-/// Gets entity structure.
-String getToString(List<ModelStructure> modelStructures) {
+String _getSeparatedFieldNames(List<ModelStructure> modelStructures) {
   modelStructures.sortModelStructures();
 
   return modelStructures
@@ -269,3 +264,11 @@ String getToString(List<ModelStructure> modelStructures) {
             '$previousValue${previousValue == '' ? '' : ', '}$element',
       );
 }
+
+String _getEquatableMixinMethods(List<ModelStructure> modelStructures) => '''
+    @override
+    List<Object?> get props => <Object?>[${_getSeparatedFieldNames(modelStructures)}];
+
+    @override
+    bool get stringify => true; 
+  ''';

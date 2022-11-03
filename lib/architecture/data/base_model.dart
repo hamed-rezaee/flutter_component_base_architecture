@@ -1,2 +1,4 @@
+import 'package:equatable/equatable.dart';
+
 /// Base class for all component models.
-class BaseModel {}
+abstract class BaseModel with EquatableMixin {}

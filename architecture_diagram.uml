@@ -12,30 +12,34 @@ class "component_generator::model_structure.dart::ModelStructure" {
   +String getToJsonDefinition
 }
 
-abstract class "data::base_mapper.dart::BaseMapper" {
+abstract class "architecture::data::base_mapper.dart::BaseMapper" {
   +Model fromEntity()
   +Entity toEntity()
 }
 
-class "data::base_model.dart::BaseModel" {
+abstract class "architecture::data::base_model.dart::BaseModel" {
 }
 
-abstract class "domain::base_repository.dart::BaseRepository" {
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "architecture::data::base_model.dart::BaseModel"
+
+abstract class "architecture::domain::base_repository.dart::BaseRepository" {
   +BaseMapper<Entity, Model> mapper
 }
 
-"domain::base_repository.dart::BaseRepository" o-- "data::base_mapper.dart::BaseMapper<Entity, Model>"
+"architecture::domain::base_repository.dart::BaseRepository" o-- "architecture::data::base_mapper.dart::BaseMapper<Entity, Model>"
 
-abstract class "domain::base_service.dart::BaseService" {
+abstract class "architecture::domain::base_service.dart::BaseService" {
   +BaseRepository<Entity, Model> repository
 }
 
-"domain::base_service.dart::BaseService" o-- "domain::base_repository.dart::BaseRepository<Entity, Model>"
+"architecture::domain::base_service.dart::BaseService" o-- "architecture::domain::base_repository.dart::BaseRepository<Entity, Model>"
 
-abstract class "domain::base_entity.dart::BaseEntity" {
+abstract class "architecture::domain::base_entity.dart::BaseEntity" {
 }
 
-class "presentation::state_manager::base_state_status.dart::BaseStateStatus" {
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "architecture::domain::base_entity.dart::BaseEntity"
+
+class "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus" {
   +int index
   {static} +List<BaseStateStatus> values
   {static} +BaseStateStatus initial
@@ -44,28 +48,28 @@ class "presentation::state_manager::base_state_status.dart::BaseStateStatus" {
   {static} +BaseStateStatus failure
 }
 
-"presentation::state_manager::base_state_status.dart::BaseStateStatus" o-- "presentation::state_manager::base_state_status.dart::BaseStateStatus"
-"dart::core::Enum" <|-- "presentation::state_manager::base_state_status.dart::BaseStateStatus"
+"architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus" o-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
+"dart::core::Enum" <|-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
 
-class "presentation::state_manager::base_state.dart::BaseState" {
+class "architecture::presentation::state_manager::base_state.dart::BaseState" {
   +BaseStateStatus status
   +Entity? data
   +String? error
   +List<Object?> props
-  +String toString()
+  +bool? stringify
 }
 
-"presentation::state_manager::base_state.dart::BaseState" o-- "presentation::state_manager::base_state_status.dart::BaseStateStatus"
-"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "presentation::state_manager::base_state.dart::BaseState"
+"architecture::presentation::state_manager::base_state.dart::BaseState" o-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "architecture::presentation::state_manager::base_state.dart::BaseState"
 
-abstract class "presentation::state_manager::base_cubit.dart::BaseCubit" {
+abstract class "architecture::presentation::state_manager::base_cubit.dart::BaseCubit" {
   +BaseService<Entity, Model>? service
 }
 
-"presentation::state_manager::base_cubit.dart::BaseCubit" o-- "domain::base_service.dart::BaseService<Entity, Model>"
-"bloc::src::bloc.dart::Cubit" <|-- "presentation::state_manager::base_cubit.dart::BaseCubit"
+"architecture::presentation::state_manager::base_cubit.dart::BaseCubit" o-- "architecture::domain::base_service.dart::BaseService<Entity, Model>"
+"bloc::src::bloc.dart::Cubit" <|-- "architecture::presentation::state_manager::base_cubit.dart::BaseCubit"
 
-class "presentation::base_widget.dart::BaseWidget" {
+class "architecture::presentation::base_widget.dart::BaseWidget" {
   +String cubitKey
   +Widget Function(BuildContext, BaseState<BaseEntity>) initialWidgetBuilder
   +Widget Function(BuildContext, BaseState<BaseEntity>) loadingWidgetBuilder
@@ -74,7 +78,7 @@ class "presentation::base_widget.dart::BaseWidget" {
   +Widget build()
 }
 
-"presentation::base_widget.dart::BaseWidget" o-- "presentation::base_widget.dart::Widget Function(BuildContext, BaseState<BaseEntity>)"
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "presentation::base_widget.dart::BaseWidget"
+"architecture::presentation::base_widget.dart::BaseWidget" o-- "architecture::presentation::base_widget.dart::Widget Function(BuildContext, BaseState<BaseEntity>)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "architecture::presentation::base_widget.dart::BaseWidget"
 
 @enduml

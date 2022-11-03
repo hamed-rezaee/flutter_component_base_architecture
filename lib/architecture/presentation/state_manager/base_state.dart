@@ -20,9 +20,5 @@ class BaseState<Entity extends BaseEntity> with EquatableMixin {
   List<Object?> get props => <Object?>[data, status, error];
 
   @override
-  String toString() => '''
-      status: $status,
-      state: $data,
-      error: $error
-    ''';
+  bool? get stringify => true;
 }

@@ -30,4 +30,10 @@ class ShowUserInformationModel implements BaseModel {
 
     return json;
   }
+
+  @override
+  List<Object?> get props => <Object?>[birthdate, name];
+
+  @override
+  bool get stringify => true;
 }

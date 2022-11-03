@@ -13,6 +13,6 @@
 ## Getting Started
 
 ```
-$ dcli compile 'lib/component_generator/generator.dart'
-$ lib/component_generator/generator
+$ dcli compile 'lib/component_generator/builder.dart'
+$ lib/component_generator/builder
 ```

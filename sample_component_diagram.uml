@@ -1,13 +1,16 @@
 @startuml
 set namespaceSeparator ::
 
-class "sample_component::data::repositories::sample_repository.dart::SampleRepository" {
-  +SampleMapper mapper
-  +Future<SampleEntity> fetch()
+class "component_generator::model_structure.dart::ModelStructure" {
+  +String name
+  +Type type
+  +bool isNullable
+  +bool isRequired
+  +String getConstructorDefinition
+  +String getFieldDefinition
+  +String getFromJsonDefinition
+  +String getToJsonDefinition
 }
-
-"sample_component::data::repositories::sample_repository.dart::SampleRepository" o-- "sample_component::data::sample_mapper.dart::SampleMapper"
-"sample_component::domain::base_sample_repository.dart::BaseSampleRepository" <|-- "sample_component::data::repositories::sample_repository.dart::SampleRepository"
 
 class "sample_component::data::sample_mapper.dart::SampleMapper" {
   +SampleModel fromEntity()
@@ -17,24 +20,31 @@ class "sample_component::data::sample_mapper.dart::SampleMapper" {
 "architecture::data::base_mapper.dart::BaseMapper" <|-- "sample_component::data::sample_mapper.dart::SampleMapper"
 
 class "sample_component::data::sample_model.dart::SampleModel" {
-  +int firstField
+  +String firstField
+  +double? secondField
   +bool? thirdField
-  +String? secondField
+  +List<Object?> props
+  +bool? stringify
   +Map<String, dynamic> toJson()
 }
 
 "architecture::data::base_model.dart::BaseModel" <|-- "sample_component::data::sample_model.dart::SampleModel"
 
-class "sample_component::domain::sample_entity.dart::SampleEntity" {
-  +int firstField
-  +bool? thirdField
-  +String? secondField
-  +List<Object?> props
-  +bool stringify
+class "sample_component::data::repositories::sample_repository.dart::SampleRepository" {
+  +SampleMapper mapper
+  +Future<SampleEntity> fetch()
 }
 
-"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "sample_component::domain::sample_entity.dart::SampleEntity"
-"architecture::domain::base_entity.dart::BaseEntity" <|-- "sample_component::domain::sample_entity.dart::SampleEntity"
+"sample_component::data::repositories::sample_repository.dart::SampleRepository" o-- "sample_component::data::sample_mapper.dart::SampleMapper"
+"sample_component::domain::base_sample_repository.dart::BaseSampleRepository" <|-- "sample_component::data::repositories::sample_repository.dart::SampleRepository"
+
+class "sample_component::domain::sample_service.dart::SampleService" {
+  +BaseSampleRepository repository
+  +Future<SampleEntity> fetch()
+}
+
+"sample_component::domain::sample_service.dart::SampleService" o-- "sample_component::domain::base_sample_repository.dart::BaseSampleRepository"
+"architecture::domain::base_service.dart::BaseService" <|-- "sample_component::domain::sample_service.dart::SampleService"
 
 abstract class "sample_component::domain::base_sample_repository.dart::BaseSampleRepository" {
   +SampleMapper mapper
@@ -44,13 +54,16 @@ abstract class "sample_component::domain::base_sample_repository.dart::BaseSampl
 "sample_component::domain::base_sample_repository.dart::BaseSampleRepository" o-- "sample_component::data::sample_mapper.dart::SampleMapper"
 "architecture::domain::base_repository.dart::BaseRepository" <|-- "sample_component::domain::base_sample_repository.dart::BaseSampleRepository"
 
-class "sample_component::domain::sample_service.dart::SampleService" {
-  +BaseSampleRepository repository
-  +Future<SampleEntity> fetch()
+class "sample_component::domain::sample_entity.dart::SampleEntity" {
+  +String firstField
+  +double? secondField
+  +bool? thirdField
+  +List<Object?> props
+  +bool stringify
 }
 
-"sample_component::domain::sample_service.dart::SampleService" o-- "sample_component::domain::base_sample_repository.dart::BaseSampleRepository"
-"architecture::domain::base_service.dart::BaseService" <|-- "sample_component::domain::sample_service.dart::SampleService"
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "sample_component::domain::sample_entity.dart::SampleEntity"
+"architecture::domain::base_entity.dart::BaseEntity" <|-- "sample_component::domain::sample_entity.dart::SampleEntity"
 
 class "sample_component::presentation::sample_cubit.dart::SampleCubit" {
 }
@@ -63,24 +76,15 @@ class "sample_component::presentation::sample_widget.dart::SampleWidget" {
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sample_component::presentation::sample_widget.dart::SampleWidget"
 
-class "component_generator::model_structure.dart::ModelStructure" {
-  +String name
-  +Type type
-  +bool isNullable
-  +bool isRequired
-  +String getConstructorDefinition
-  +String getFieldDefinition
-  +String getFromJsonDefinition
-  +String getToJsonDefinition
-}
-
 abstract class "architecture::data::base_mapper.dart::BaseMapper" {
   +Model fromEntity()
   +Entity toEntity()
 }
 
-class "architecture::data::base_model.dart::BaseModel" {
+abstract class "architecture::data::base_model.dart::BaseModel" {
 }
+
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "architecture::data::base_model.dart::BaseModel"
 
 abstract class "architecture::domain::base_repository.dart::BaseRepository" {
   +BaseMapper<Entity, Model> mapper
@@ -96,6 +100,8 @@ abstract class "architecture::domain::base_service.dart::BaseService" {
 
 abstract class "architecture::domain::base_entity.dart::BaseEntity" {
 }
+
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "architecture::domain::base_entity.dart::BaseEntity"
 
 class "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus" {
   +int index
@@ -114,7 +120,7 @@ class "architecture::presentation::state_manager::base_state.dart::BaseState" {
   +Entity? data
   +String? error
   +List<Object?> props
-  +String toString()
+  +bool? stringify
 }
 
 "architecture::presentation::state_manager::base_state.dart::BaseState" o-- "architecture::presentation::state_manager::base_state_status.dart::BaseStateStatus"
