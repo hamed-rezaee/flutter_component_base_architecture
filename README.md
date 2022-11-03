@@ -6,9 +6,9 @@
 
 ![Architecture Diagram](/architecture_diagram.png)
 
-#### Sample Diagram
+#### Sample Component Diagram
 
-![Sample Diagram](/sample_diagram.png)
+![Sample component Diagram](/sample_component_diagram.png)
 
 ## Getting Started
 
