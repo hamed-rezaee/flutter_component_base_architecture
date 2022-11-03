@@ -1,31 +1,31 @@
 @startuml
 set namespaceSeparator ::
 
-class "sample_unit_component::data::repositories::sample_unit_repository.dart::SampleUnitRepository" {
-  +SampleUnitMapper mapper
-  +Future<SampleUnitEntity> fetch()
+class "sample_component::data::repositories::sample_repository.dart::SampleRepository" {
+  +SampleMapper mapper
+  +Future<SampleEntity> fetch()
 }
 
-"sample_unit_component::data::repositories::sample_unit_repository.dart::SampleUnitRepository" o-- "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper"
-"sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository" <|-- "sample_unit_component::data::repositories::sample_unit_repository.dart::SampleUnitRepository"
+"sample_component::data::repositories::sample_repository.dart::SampleRepository" o-- "sample_component::data::sample_mapper.dart::SampleMapper"
+"sample_component::domain::base_sample_repository.dart::BaseSampleRepository" <|-- "sample_component::data::repositories::sample_repository.dart::SampleRepository"
 
-class "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper" {
-  +SampleUnitModel fromEntity()
-  +SampleUnitEntity toEntity()
+class "sample_component::data::sample_mapper.dart::SampleMapper" {
+  +SampleModel fromEntity()
+  +SampleEntity toEntity()
 }
 
-"architecture::data::base_mapper.dart::BaseMapper" <|-- "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper"
+"architecture::data::base_mapper.dart::BaseMapper" <|-- "sample_component::data::sample_mapper.dart::SampleMapper"
 
-class "sample_unit_component::data::sample_unit_model.dart::SampleUnitModel" {
+class "sample_component::data::sample_model.dart::SampleModel" {
   +int firstField
   +bool? thirdField
   +String? secondField
   +Map<String, dynamic> toJson()
 }
 
-"architecture::data::base_model.dart::BaseModel" <|-- "sample_unit_component::data::sample_unit_model.dart::SampleUnitModel"
+"architecture::data::base_model.dart::BaseModel" <|-- "sample_component::data::sample_model.dart::SampleModel"
 
-class "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity" {
+class "sample_component::domain::sample_entity.dart::SampleEntity" {
   +int firstField
   +bool? thirdField
   +String? secondField
@@ -33,35 +33,35 @@ class "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity"
   +bool stringify
 }
 
-"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity"
-"architecture::domain::base_entity.dart::BaseEntity" <|-- "sample_unit_component::domain::sample_unit_entity.dart::SampleUnitEntity"
+"equatable::src::equatable_mixin.dart::EquatableMixin" <|-- "sample_component::domain::sample_entity.dart::SampleEntity"
+"architecture::domain::base_entity.dart::BaseEntity" <|-- "sample_component::domain::sample_entity.dart::SampleEntity"
 
-abstract class "sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository" {
-  +SampleUnitMapper mapper
-  +Future<SampleUnitEntity> fetch()
+abstract class "sample_component::domain::base_sample_repository.dart::BaseSampleRepository" {
+  +SampleMapper mapper
+  +Future<SampleEntity> fetch()
 }
 
-"sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository" o-- "sample_unit_component::data::sample_unit_mapper.dart::SampleUnitMapper"
-"architecture::domain::base_repository.dart::BaseRepository" <|-- "sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository"
+"sample_component::domain::base_sample_repository.dart::BaseSampleRepository" o-- "sample_component::data::sample_mapper.dart::SampleMapper"
+"architecture::domain::base_repository.dart::BaseRepository" <|-- "sample_component::domain::base_sample_repository.dart::BaseSampleRepository"
 
-class "sample_unit_component::domain::sample_unit_service.dart::SampleUnitService" {
-  +BaseSampleUnitRepository repository
-  +Future<SampleUnitEntity> fetch()
+class "sample_component::domain::sample_service.dart::SampleService" {
+  +BaseSampleRepository repository
+  +Future<SampleEntity> fetch()
 }
 
-"sample_unit_component::domain::sample_unit_service.dart::SampleUnitService" o-- "sample_unit_component::domain::base_sample_unit_repository.dart::BaseSampleUnitRepository"
-"architecture::domain::base_service.dart::BaseService" <|-- "sample_unit_component::domain::sample_unit_service.dart::SampleUnitService"
+"sample_component::domain::sample_service.dart::SampleService" o-- "sample_component::domain::base_sample_repository.dart::BaseSampleRepository"
+"architecture::domain::base_service.dart::BaseService" <|-- "sample_component::domain::sample_service.dart::SampleService"
 
-class "sample_unit_component::presentation::sample_unit_cubit.dart::SampleUnitCubit" {
+class "sample_component::presentation::sample_cubit.dart::SampleCubit" {
 }
 
-"architecture::presentation::state_manager::base_cubit.dart::BaseCubit" <|-- "sample_unit_component::presentation::sample_unit_cubit.dart::SampleUnitCubit"
+"architecture::presentation::state_manager::base_cubit.dart::BaseCubit" <|-- "sample_component::presentation::sample_cubit.dart::SampleCubit"
 
-class "sample_unit_component::presentation::sample_unit_widget.dart::SampleUnitWidget" {
+class "sample_component::presentation::sample_widget.dart::SampleWidget" {
   +Widget build()
 }
 
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sample_unit_component::presentation::sample_unit_widget.dart::SampleUnitWidget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sample_component::presentation::sample_widget.dart::SampleWidget"
 
 class "component_generator::model_structure.dart::ModelStructure" {
   +String name
