@@ -35,5 +35,8 @@ class ShowUserInformationModel implements BaseModel {
   List<Object?> get props => <Object?>[name, birthdate];
 
   @override
-  bool get stringify => true;
+  bool? get stringify => false;
+
+  @override
+  String toString() => '$runtimeType(name: $name, birthdate: $birthdate)';
 }

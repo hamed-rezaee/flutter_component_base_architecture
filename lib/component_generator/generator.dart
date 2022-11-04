@@ -258,17 +258,20 @@ String _getEquatableMixinMethods(List<ModelStructure> modelStructures) => '''
       List<Object?> get props => <Object?>[${_getSeparatedFieldNames(modelStructures)}];
 
       @override
-      bool get stringify => true;
+      bool? get stringify => false;
+
+      @override
+      String toString() => '\$runtimeType(${_getSeparatedFieldNames(modelStructures, true)})';
     ''';
 
 String _getSeparatedFieldNames(
   List<ModelStructure> modelStructures, [
-  String separator = ',',
+  bool showModelValue = false,
 ]) =>
     (modelStructures..sortModelStructures())
         .map<String>((ModelStructure element) => element.name)
         .fold(
           '',
           (String previousValue, String element) =>
-              '$previousValue${previousValue == '' ? '' : '$separator'}$element',
+              '$previousValue${previousValue == '' ? '' : ', '}$element${showModelValue ? ': \$$element' : ''}',
         );
