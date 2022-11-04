@@ -49,7 +49,7 @@ class BaseWidget<Entity extends BaseEntity, Model extends BaseModel,
             case BaseStateStatus.loading:
               return loadingWidgetBuilder(context, state);
             case BaseStateStatus.success:
-              return loadingWidgetBuilder(context, state);
+              return successWidgetBuilder(context, state);
             case BaseStateStatus.failure:
               return errorWidgetBuilder(context, state);
           }

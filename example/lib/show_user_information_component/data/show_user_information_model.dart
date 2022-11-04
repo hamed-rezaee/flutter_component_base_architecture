@@ -32,7 +32,7 @@ class ShowUserInformationModel implements BaseModel {
   }
 
   @override
-  List<Object?> get props => <Object?>[birthdate, name];
+  List<Object?> get props => <Object?>[name, birthdate];
 
   @override
   bool get stringify => true;

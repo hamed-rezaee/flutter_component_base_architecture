@@ -15,7 +15,7 @@ class ShowUserInformationEntity implements BaseEntity {
   final DateTime? birthdate;
 
   @override
-  List<Object?> get props => <Object?>[birthdate, name];
+  List<Object?> get props => <Object?>[name, birthdate];
 
   @override
   bool get stringify => true;

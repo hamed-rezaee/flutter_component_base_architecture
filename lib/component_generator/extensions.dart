@@ -21,33 +21,26 @@ extension StringExtension on String {
 /// List of [ModelStructure] extensions.
 extension ModelStructureSort on List<ModelStructure> {
   /// Sorts a list of [ModelStructure]s.
-  void sortModelStructures({bool checkIsRequired = false}) {
-    if (checkIsRequired) {
-      final List<ModelStructure> requiredModels =
-          where((ModelStructure element) => element.isRequired).toList();
+  void sortModelStructures() {
+    final List<ModelStructure> requiredModels =
+        where((ModelStructure element) => element.isRequired).toList();
 
-      final List<ModelStructure> nounRequiredModels =
-          where((ModelStructure element) => !element.isRequired).toList();
+    final List<ModelStructure> nounRequiredModels =
+        where((ModelStructure element) => !element.isRequired).toList();
 
-      requiredModels.sort(
-        (ModelStructure first, ModelStructure second) =>
-            first.name.compareTo(second.name),
-      );
+    requiredModels.sort(
+      (ModelStructure first, ModelStructure second) =>
+          first.name.compareTo(second.name),
+    );
 
-      nounRequiredModels.sort(
-        (ModelStructure first, ModelStructure second) =>
-            first.name.compareTo(second.name),
-      );
+    nounRequiredModels.sort(
+      (ModelStructure first, ModelStructure second) =>
+          first.name.compareTo(second.name),
+    );
 
-      this
-        ..clear()
-        ..addAll(requiredModels)
-        ..addAll(nounRequiredModels);
-    } else {
-      sort(
-        (ModelStructure first, ModelStructure second) =>
-            first.name.compareTo(second.name),
-      );
-    }
+    this
+      ..clear()
+      ..addAll(requiredModels)
+      ..addAll(nounRequiredModels);
   }
 }

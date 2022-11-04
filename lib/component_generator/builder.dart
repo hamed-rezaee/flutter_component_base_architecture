@@ -74,20 +74,24 @@ List<ModelStructure> _getFields() {
       validator: Ask.alpha,
     );
 
+    if (modelStructures.any((ModelStructure item) => item.name == fieldName)) {
+      printerr(red('# Field name is already exists.'));
+
+      continue;
+    }
+
     final String fieldType = ask(
       green('# Enter field type ${orange('${dartTypes.printKeys}')}'),
       validator: Ask.inList(dartTypes.keys.toList(), caseSensitive: true),
     );
 
-    final bool isRequired = confirm(
-      green('# Required'),
-      defaultValue: true,
-    );
+    final bool isRequired = confirm(green('# Required'), defaultValue: true);
 
-    final bool isNullable = confirm(
-      green('# Nullable'),
-      defaultValue: false,
-    );
+    bool isNullable = true;
+
+    if (isRequired) {
+      isNullable = confirm(green('# Nullable'), defaultValue: false);
+    }
 
     final ModelStructure modelStructure = ModelStructure(
       name: fieldName,

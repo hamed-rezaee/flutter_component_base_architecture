@@ -11,11 +11,11 @@ class ShowUserInformationRepository
 
   @override
   Future<ShowUserInformationEntity> fetchUserInformation() async {
-    await Future<void>.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 1));
 
     return mapper.toEntity(
       ShowUserInformationModel.fromJson(
-        <String, dynamic>{'name': 'John Doe', 'birthdate': '1985-11-11'},
+        <String, dynamic>{'name': 'John Doe', 'birthdate': '${DateTime.now()}'},
       ),
     );
   }

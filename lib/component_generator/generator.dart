@@ -183,7 +183,7 @@ String _generateConstructor({
   required List<ModelStructure> modelStructures,
   bool isModel = true,
 }) {
-  modelStructures.sortModelStructures(checkIsRequired: true);
+  modelStructures.sortModelStructures();
 
   final StringBuffer body = StringBuffer();
 
@@ -201,7 +201,7 @@ String _generateFromJson({
   required String name,
   required List<ModelStructure> modelStructures,
 }) {
-  modelStructures.sortModelStructures(checkIsRequired: true);
+  modelStructures.sortModelStructures();
 
   final StringBuffer body = StringBuffer();
 
@@ -219,7 +219,7 @@ String _generateToJson({
   required String name,
   required List<ModelStructure> modelStructures,
 }) {
-  modelStructures.sortModelStructures(checkIsRequired: true);
+  modelStructures.sortModelStructures();
 
   final StringBuffer body = StringBuffer();
 
@@ -240,7 +240,7 @@ String _generateToJson({
 }
 
 String _generateFields(List<ModelStructure> modelStructures) {
-  modelStructures.sortModelStructures(checkIsRequired: true);
+  modelStructures.sortModelStructures();
 
   final StringBuffer body = StringBuffer();
 
@@ -253,22 +253,22 @@ String _generateFields(List<ModelStructure> modelStructures) {
   return '$body';
 }
 
-String _getSeparatedFieldNames(List<ModelStructure> modelStructures) {
-  modelStructures.sortModelStructures();
-
-  return modelStructures
-      .map<String>((ModelStructure element) => element.name)
-      .fold(
-        '',
-        (String previousValue, String element) =>
-            '$previousValue${previousValue == '' ? '' : ', '}$element',
-      );
-}
-
 String _getEquatableMixinMethods(List<ModelStructure> modelStructures) => '''
-    @override
-    List<Object?> get props => <Object?>[${_getSeparatedFieldNames(modelStructures)}];
+      @override
+      List<Object?> get props => <Object?>[${_getSeparatedFieldNames(modelStructures)}];
 
-    @override
-    bool get stringify => true; 
-  ''';
+      @override
+      bool get stringify => true;
+    ''';
+
+String _getSeparatedFieldNames(
+  List<ModelStructure> modelStructures, [
+  String separator = ',',
+]) =>
+    (modelStructures..sortModelStructures())
+        .map<String>((ModelStructure element) => element.name)
+        .fold(
+          '',
+          (String previousValue, String element) =>
+              '$previousValue${previousValue == '' ? '' : '$separator'}$element',
+        );
