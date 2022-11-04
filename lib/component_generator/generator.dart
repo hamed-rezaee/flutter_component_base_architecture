@@ -167,13 +167,13 @@ String getWidgetStructure({required String name, required String postfix}) =>
         @override
         Widget build(BuildContext context) => BaseWidget<${name}Entity, ${name}Model, ${name}Cubit>(
           initialWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+            (BuildContext context, BaseState<${name}Entity> state,) => throw UnimplementedError(),
           loadingWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+            (BuildContext context, BaseState<${name}Entity> state,) => throw UnimplementedError(),
           successWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+            (BuildContext context, BaseState<${name}Entity> state,) => throw UnimplementedError(),
           errorWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) => throw UnimplementedError(),
+            (BuildContext context, BaseState<${name}Entity> state,) => throw UnimplementedError(),
         );
       }
     ''';
