@@ -9,17 +9,25 @@ class ShowUserInformationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BaseWidget<ShowUserInformationEntity,
           ShowUserInformationModel, ShowUserInformationCubit>(
-        initialWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) =>
-                const SizedBox.shrink(),
-        loadingWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) =>
-                const CircularProgressIndicator(),
-        successWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) =>
-                Text('${state.data}'),
-        errorWidgetBuilder:
-            (BuildContext context, BaseState<BaseEntity> state) =>
-                Text(state.error ?? 'ERROR'),
+        initialWidgetBuilder: (
+          BuildContext context,
+          BaseState<ShowUserInformationEntity> state,
+        ) =>
+            const SizedBox.shrink(),
+        loadingWidgetBuilder: (
+          BuildContext context,
+          BaseState<ShowUserInformationEntity> state,
+        ) =>
+            const CircularProgressIndicator(),
+        successWidgetBuilder: (
+          BuildContext context,
+          BaseState<ShowUserInformationEntity> state,
+        ) =>
+            Text('${state.data}'),
+        errorWidgetBuilder: (
+          BuildContext context,
+          BaseState<ShowUserInformationEntity> state,
+        ) =>
+            Text(state.error ?? 'ERROR'),
       );
 }
