@@ -7,7 +7,7 @@ class ShowUserInformationService
     implements
         BaseService<ShowUserInformationEntity, ShowUserInformationModel> {
   /// Initializes [ShowUserInformationService].
-  ShowUserInformationService(this.repository);
+  const ShowUserInformationService(this.repository);
 
   @override
   final BaseShowUserInformationRepository repository;

@@ -3,7 +3,7 @@ import 'package:flutter_app_architecture/components.dart';
 /// Show user information model.
 class ShowUserInformationModel implements BaseModel {
   /// Initializes [ShowUserInformationModel].
-  ShowUserInformationModel({
+  const ShowUserInformationModel({
     required this.name,
     this.birthdate,
   });

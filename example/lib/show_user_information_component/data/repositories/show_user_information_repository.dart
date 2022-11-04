@@ -4,7 +4,7 @@ import '../../show_user_information_component.dart';
 class ShowUserInformationRepository
     implements BaseShowUserInformationRepository {
   /// Initializes [ShowUserInformationRepository].
-  ShowUserInformationRepository(this.mapper);
+  const ShowUserInformationRepository(this.mapper);
 
   @override
   final ShowUserInformationMapper mapper;

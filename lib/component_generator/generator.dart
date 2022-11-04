@@ -57,7 +57,7 @@ String getBaseRepositoryStructure({
       /// Base ${name.toSentenceLowerCase} repository.
       abstract class Base${name}Repository implements BaseRepository<${name}Entity, ${name}Model> {
         /// Initializes [Base${name}Repository].
-        Base${name}Repository(this.mapper);
+        const Base${name}Repository(this.mapper);
 
         @override
         final ${name}Mapper mapper;
@@ -75,7 +75,7 @@ String getRepositoryStructure({
       /// ${name.toSentenceCase} repository.
       class ${name}Repository implements Base${name}Repository {
         /// Initializes [${name}Repository].
-        ${name}Repository(this.mapper);
+        const ${name}Repository(this.mapper);
 
         @override
         final ${name}Mapper mapper;
@@ -130,7 +130,7 @@ String getServiceStructure({required String name, required String postfix}) =>
       /// ${name.toSentenceCase} service.
       class ${name}Service implements BaseService<${name}Entity, ${name}Model> {
         /// Initializes [${name}Service].
-        ${name}Service(this.repository);
+        const ${name}Service(this.repository);
 
         @override
         final Base${name}Repository repository;
@@ -193,7 +193,7 @@ String _generateConstructor({
 
   return '''
     /// Initializes [$name${isModel ? 'Model' : 'Entity'}].
-    $name${isModel ? 'Model' : 'Entity'}({$body});
+    const $name${isModel ? 'Model' : 'Entity'}({$body});
   ''';
 }
 

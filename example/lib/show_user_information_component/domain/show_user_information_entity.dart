@@ -3,7 +3,7 @@ import 'package:flutter_app_architecture/components.dart';
 /// Show user information entity.
 class ShowUserInformationEntity implements BaseEntity {
   /// Initializes [ShowUserInformationEntity].
-  ShowUserInformationEntity({
+  const ShowUserInformationEntity({
     required this.name,
     this.birthdate,
   });

@@ -7,7 +7,7 @@ abstract class BaseShowUserInformationRepository
     implements
         BaseRepository<ShowUserInformationEntity, ShowUserInformationModel> {
   /// Initializes [BaseShowUserInformationRepository].
-  BaseShowUserInformationRepository(this.mapper);
+  const BaseShowUserInformationRepository(this.mapper);
 
   @override
   final ShowUserInformationMapper mapper;
