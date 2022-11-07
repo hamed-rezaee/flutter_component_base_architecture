@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../show_user_information_component.dart';
 
 /// Show user information repository.
@@ -13,10 +15,19 @@ class ShowUserInformationRepository
   Future<ShowUserInformationEntity> fetchUserInformation() async {
     await Future<void>.delayed(const Duration(seconds: 1));
 
-    return mapper.toEntity(
-      ShowUserInformationModel.fromJson(
-        <String, dynamic>{'name': 'John Doe', 'birthdate': '${DateTime.now()}'},
-      ),
-    );
+    final bool isFailed = Random().nextBool();
+
+    if (isFailed) {
+      throw Exception('Something goes wrong... :(');
+    } else {
+      return mapper.toEntity(
+        ShowUserInformationModel.fromJson(
+          <String, dynamic>{
+            'name': 'John Doe',
+            'birthdate': '${DateTime.now()}'
+          },
+        ),
+      );
+    }
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_app_architecture/components.dart';
 
 import '../show_user_information_component.dart';
@@ -13,28 +11,6 @@ class ShowUserInformationCubit
     ShowUserInformationService? service,
   }) : super(service: service, initialState: initialState);
 
-  Future<void> fetchUserInformation() async {
-    emit(BaseState<ShowUserInformationEntity>(status: BaseStateStatus.loading));
-
-    final ShowUserInformationEntity result =
-        await (service as ShowUserInformationService).fetchUserInformation();
-
-    final bool isFailed = Random().nextBool();
-
-    if (isFailed) {
-      emit(
-        BaseState<ShowUserInformationEntity>(
-          status: BaseStateStatus.failure,
-          error: 'RANDOM ERROR :(',
-        ),
-      );
-    } else {
-      emit(
-        BaseState<ShowUserInformationEntity>(
-          status: BaseStateStatus.success,
-          data: result,
-        ),
-      );
-    }
-  }
+  Future<void> fetchUserInformation() =>
+      updateState((service as ShowUserInformationService).fetchUserInformation);
 }

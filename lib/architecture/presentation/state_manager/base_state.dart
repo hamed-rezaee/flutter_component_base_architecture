@@ -14,7 +14,7 @@ class BaseState<Entity extends BaseEntity> with EquatableMixin {
   Entity? data;
 
   /// Error of state.
-  String? error;
+  Exception? error;
 
   @override
   List<Object?> get props => <Object?>[data, status, error];

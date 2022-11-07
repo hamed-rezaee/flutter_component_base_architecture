@@ -28,6 +28,6 @@ class ShowUserInformationWidget extends StatelessWidget {
           BuildContext context,
           BaseState<ShowUserInformationEntity> state,
         ) =>
-            Text(state.error ?? 'ERROR'),
+            Text('${state.error}'),
       );
 }
