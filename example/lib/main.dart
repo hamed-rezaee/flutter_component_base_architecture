@@ -42,7 +42,7 @@ class App extends StatelessWidget {
               children: <Widget>[
                 ShowUserInformationWidget(),
                 const Spacer(),
-                TextButton(
+                ElevatedButton(
                   child: const Text('FETCH DATA'),
                   onPressed: BlocManager.instance
                       .fetch<ShowUserInformationCubit>()
