@@ -40,6 +40,10 @@ Then it generates the following files:
 
 ## Architecture
 
+#### Component Architecture Diagram
+
+![Component Architecture UML Diagram](/component_architecture.png)
+
 #### Architecture Diagram
 
 ![Architecture Diagram](/architecture_diagram.png)
