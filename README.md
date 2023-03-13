@@ -2,8 +2,8 @@
 
 This architecture is based on a `clean architecture` pattern with the purpose of separating concerns and promoting modularity, testability and maintainability of the code. It includes the following components:
 
-1. **Entities**: Represent the business objects of the application. They are platform independent and contain only business logic.
-2. **Models**: Represent the view objects of the application. They are platform dependent and contain only presentation logic.
+1. **Entities**: Represents the domain models of the application. It contains the data structure of the domain layer and is platform-independent.
+2. **Models**: Represents the data models of the application. It contains the data structure of the data layer.
 3. **Mappers**: Convert entities to models and vice versa.
 4. **Repositories**: Manage the storage and retrieval of data from different data sources (e.g. local storage, network).
 5. **Services**: Provide the business logic of the application. They orchestrate repositories to perform business operations and expose them to the presentation layer.
