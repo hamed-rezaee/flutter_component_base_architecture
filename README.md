@@ -75,4 +75,4 @@ To run the application, execute the following command in the terminal:
 dcli deriv_component_generator.dart
 ```
 
-- Note: You need to have the `dcli` package installed in order to run the application.
+Note: You need to have the `dcli` package installed in order to run the application.
