@@ -1,4 +1,19 @@
-# Deriv Component Generator
+# Flutter Component Architecture with Bloc and Cubit
+
+This architecture is based on a `clean architecture` pattern with the purpose of separating concerns and promoting modularity, testability and maintainability of the code. It includes the following components:
+
+1. **Entities**: Represent the business objects of the application. They are platform independent and contain only business logic.
+2. **Models**: Represent the view objects of the application. They are platform dependent and contain only presentation logic.
+3. **Mappers**: Convert entities to models and vice versa.
+4. **Repositories**: Manage the storage and retrieval of data from different data sources (e.g. local storage, network).
+5. **Services**: Provide the business logic of the application. They orchestrate repositories to perform business operations and expose them to the presentation layer.
+6. **Cubits**: Manage the state of the presentation layer. They react to user events, interact with services to perform business operations, and emit states to rebuild the UI.
+7. **States**: Represent the different states of the presentation layer. They contain the data necessary to rebuild the UI and indicate the current status of the operation being performed.
+8. **Widgets**: Build the UI using the states emitted by cubits.
+
+By separating concerns, this architecture enables developers to easily replace or modify components without affecting the entire system. It also promotes testability by allowing for the easy creation of isolated tests for each component.
+
+## Deriv Component Generator
 
 This is a command-line application that generates boilerplate code for a component. It generates code for the data layer, domain layer, and presentation layer using the following files:
 
