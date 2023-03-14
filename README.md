@@ -1,4 +1,4 @@
-# Flutter Component Architecture
+# Flutter Component Base Architecture
 
 This architecture is based on a `clean architecture` pattern with the purpose of separating concerns and promoting modularity, testability and maintainability of the code. It includes the following components:
 
