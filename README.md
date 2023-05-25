@@ -13,7 +13,7 @@ This architecture is based on a `clean architecture` pattern with the purpose of
 
 By separating concerns, this architecture enables developers to easily replace or modify components without affecting the entire system. It also promotes testability by allowing for the easy creation of isolated tests for each component.
 
-## Deriv Component Generator
+## Component Generator
 
 This is a command-line application that generates boilerplate code for a component. It generates code for the data layer, domain layer, and presentation layer using the following files:
 
@@ -72,7 +72,7 @@ Then it generates the following files:
 To run the application, execute the following command in the terminal:
 
 ```shell
-dcli deriv_component_generator.dart
+dcli component_generator.dart
 ```
 
 Note: You need to have the `dcli` package installed in order to run the application.
